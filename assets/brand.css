@@ -547,3 +547,8 @@ body .compare-at-price {
 body .product-grid .product-card .compare-at-price {
   font-size: 0.9375rem;
 }
+
+/* Cart drawer: slides over the page instead of pushing the page content aside */
+body .page-wrapper.page-wrapper--drawer-open {
+  margin-inline-end: 0;
+}

@@ -412,10 +412,7 @@
     min-height: 44px;
     color: var(--arette-header-link);
     cursor: pointer;
-    transition:
-      color 0.3s ease,
-      opacity 0.3s ease,
-      visibility 0.3s;
+    transition: color 0.3s ease;
   }
 
   /* The item-count bubble follows the icon colour, including on hover. */
@@ -441,14 +438,6 @@
      so each button is pulled outward by half of the difference. */
   .arette-header__cart {
     margin-inline-end: calc((var(--arette-header-tap) - var(--arette-header-cart-size)) / -2);
-  }
-
-  /* On desktop the cart drawer opens beside the header, so the cart icon steps aside while it is open. */
-  @media screen and (min-width: 750px) {
-    body:has(#cart-drawer[open]) .arette-header__cart {
-      visibility: hidden;
-      opacity: 0;
-    }
   }
 
   .arette-header__cart .svg-wrapper {
