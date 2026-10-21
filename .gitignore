@@ -1,0 +1,82 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# WebStorm project files
+.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Optional NPM cache directory
+.npm/
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Environment Variables file
+.env
+
+# macOS Finder folder attributes
+*.DS_Store
+
+# macOS resource forks
+._*
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Parcel-bundler cache (https://parceljs.org/)
+.cache/
+
+# dist folder
+dist/
+
+# Build directory
+build/
+
+# Compiled JavaScript files (except theme assets and tailwind config)
+*.js
+*.jsx
+*.ts
+*.tsx
+*.d.ts
+!assets/*.js
+!snippets/*.js.liquid
+!assets/*.js.liquid
+!tailwind.config.js
+
+# Local environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Output of 'npm pack'
+*.tgz
+
+# eslint cache
+.eslintcache
+
+# TypeScript cache
+*.tsbuildinfo
+
+CLAUDE.md
+
+# shopify cli config file
+shopify.theme.toml
+# Playwright MCP browser session logs
+.playwright-mcp/
+docs/*
