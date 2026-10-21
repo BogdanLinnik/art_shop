@@ -1,48 +1,59 @@
 {% comment %}
   Section contract.
-  Centered call-to-action band: optional eyebrow, heading, text and an outlined button.
-  Used twice on collection and product pages ("family tradition" and "share your history").
+  Row of call-to-action panels. Each panel is a block with an optional eyebrow, heading, text and an
+  outlined button. Panels sit side by side on desktop and stack on mobile; a single panel fills the row.
+  Used on collection and product pages ("family tradition" and "share your history").
   @example
   <!-- Added to templates/collection.json and templates/product.json below the main section -->
 {% endcomment %}
 
 <section
-  class="arette-cta"
-  data-arette-reveal-group
-  style="
-    --arette-cta-background: {{ section.settings.background_color }};
-    --arette-cta-heading: {{ section.settings.heading_color }};
-    --arette-cta-text: {{ section.settings.text_color }};
-    --arette-cta-padding: {{ section.settings.padding }}px;
-  "
+  class="arette-cta-row"
+  style="--arette-cta-columns: {{ section.blocks.size | at_least: 1 }};"
 >
-  <div class="arette-cta__inner">
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="arette-cta__eyebrow" data-arette-reveal>{{ section.settings.eyebrow | escape }}</p>
-    {%- endif -%}
+  {%- for block in section.blocks -%}
+    <div
+      class="arette-cta"
+      data-arette-reveal-group
+      style="
+        --arette-cta-background: {{ block.settings.background_color }};
+        --arette-cta-heading: {{ block.settings.heading_color }};
+        --arette-cta-text: {{ block.settings.text_color }};
+        --arette-cta-padding: {{ block.settings.padding }}px;
+      "
+      {{ block.shopify_attributes }}
+    >
+      <div class="arette-cta__inner">
+        <div class="arette-cta__content">
+          {%- if block.settings.eyebrow != blank -%}
+            <p class="arette-cta__eyebrow" data-arette-reveal>{{ block.settings.eyebrow | escape }}</p>
+          {%- endif -%}
 
-    {%- if section.settings.heading != blank -%}
-      <h2 class="arette-cta__heading" data-arette-reveal>{{ section.settings.heading | escape }}</h2>
-    {%- endif -%}
+          {%- if block.settings.heading != blank -%}
+            <h2 class="arette-cta__heading" data-arette-reveal>{{ block.settings.heading | escape }}</h2>
+          {%- endif -%}
 
-    {%- if section.settings.text != blank -%}
-      <p class="arette-cta__text" data-arette-reveal>{{ section.settings.text | escape }}</p>
-    {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <p class="arette-cta__text" data-arette-reveal>{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </div>
 
-    {%- if section.settings.button_label != blank and section.settings.button_url != blank -%}
-      <a
-        href="{{ section.settings.button_url }}"
-        class="arette-cta__button"
-        data-arette-reveal
-        {% if section.settings.open_in_new_tab %}
-          target="_blank"
-          rel="noopener"
-        {% endif %}
-      >
-        {{- section.settings.button_label | escape -}}
-      </a>
-    {%- endif -%}
-  </div>
+        {%- if block.settings.button_label != blank and block.settings.button_url != blank -%}
+          <a
+            href="{{ block.settings.button_url }}"
+            class="arette-cta__button"
+            data-arette-reveal
+            {% if block.settings.open_in_new_tab %}
+              target="_blank"
+              rel="noopener"
+            {% endif %}
+          >
+            {{- block.settings.button_label | escape -}}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
 </section>
 
 <script
@@ -52,20 +63,40 @@
 ></script>
 
 {% stylesheet %}
+  .arette-cta-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .arette-cta {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
     background-color: var(--arette-cta-background);
     padding-block: var(--arette-cta-padding);
     padding-inline: var(--page-margin, 1.25rem);
     text-align: center;
   }
 
+  /* The text block centres in the space above the button, and the button sits at the bottom
+     of every panel, so buttons in neighbouring panels line up at the same distance from the bottom. */
   .arette-cta__inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
-    max-width: 52rem;
+    gap: 2rem;
+    width: 100%;
+    max-width: 40rem;
     margin-inline: auto;
+  }
+
+  .arette-cta__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
   }
 
   .arette-cta__eyebrow {
@@ -81,7 +112,7 @@
   .arette-cta__heading {
     margin: 0;
     font-family: var(--arette-font-display, sans-serif);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
     line-height: 1.05;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -91,10 +122,10 @@
 
   .arette-cta__text {
     margin: 0;
-    max-width: 40rem;
+    max-width: 34rem;
     font-family: var(--arette-font-sub, sans-serif);
     font-weight: 500;
-    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
     line-height: 1.5;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -107,7 +138,6 @@
     align-items: center;
     justify-content: center;
     min-height: 3.25rem;
-    margin-block-start: 0.75rem;
     padding: 1rem 2rem;
     border: 1px solid var(--arette-black, #231f20);
     font-family: var(--arette-font-display, sans-serif);
@@ -127,6 +157,12 @@
     color: var(--arette-sand, #f5f3ea);
   }
 
+  @media screen and (min-width: 750px) {
+    .arette-cta-row {
+      grid-template-columns: repeat(var(--arette-cta-columns, 1), minmax(0, 1fr));
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .arette-cta__button {
       transition: none;
@@ -136,79 +172,94 @@
 
 {% schema %}
 {
-  "name": "t:names.arette_cta",
-  "settings": [
+  "name": "t:names.arette_cta_row",
+  "blocks": [
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "t:settings.arette_eyebrow"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "t:settings.heading"
-    },
-    {
-      "type": "textarea",
-      "id": "text",
-      "label": "t:settings.text"
-    },
-    {
-      "type": "header",
-      "content": "t:content.arette_button"
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "t:settings.label"
-    },
-    {
-      "type": "url",
-      "id": "button_url",
-      "label": "t:settings.link"
-    },
-    {
-      "type": "checkbox",
-      "id": "open_in_new_tab",
-      "label": "t:settings.arette_open_new_tab",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "t:content.colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background",
-      "default": "#f5f3ea"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "t:settings.arette_heading_color",
-      "default": "#696d40"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "t:settings.text_color",
-      "default": "#7b5221"
-    },
-    {
-      "type": "range",
-      "id": "padding",
-      "label": "t:settings.padding",
-      "min": 24,
-      "max": 160,
-      "step": 8,
-      "unit": "px",
-      "default": 88
+      "type": "cta",
+      "name": "t:names.arette_cta",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "t:settings.arette_eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:settings.heading"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:settings.text"
+        },
+        {
+          "type": "header",
+          "content": "t:content.arette_button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:settings.label"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "t:settings.link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "t:settings.arette_open_new_tab",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "t:content.colors"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "t:settings.background",
+          "default": "#f5f3ea"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "t:settings.arette_heading_color",
+          "default": "#696d40"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:settings.text_color",
+          "default": "#7b5221"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "label": "t:settings.padding",
+          "min": 24,
+          "max": 160,
+          "step": 8,
+          "unit": "px",
+          "default": 88
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "t:names.arette_cta"
+      "name": "t:names.arette_cta_row",
+      "blocks": [
+        {
+          "type": "cta"
+        },
+        {
+          "type": "cta"
+        }
+      ]
     }
   ]
 }
