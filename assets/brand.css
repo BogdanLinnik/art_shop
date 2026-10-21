@@ -397,3 +397,153 @@ footer .button {
     --product-grid-columns-desktop: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* Collection page: product list spacing and width */
+.collection-wrapper {
+  max-width: 70rem;
+  margin-inline: auto;
+  margin-block: 3.5rem 5rem;
+}
+
+/* Product cards: inner padding, larger price, slow image zoom on hover */
+body .product-grid .product-card {
+  padding: 1.25rem;
+}
+
+body .product-grid .product-card .price,
+body .product-grid .product-card [class*='price'] {
+  font-size: 1.125rem;
+}
+
+body .product-grid .card-gallery {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body .product-grid .product-media__image {
+    transition: transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  body .product-grid product-card:is(:hover, :focus-within) .product-media__image {
+    transform: scale(1.07);
+  }
+}
+
+/* Add link: the quick-add button becomes a text link on the price line (arette-card-add block) */
+body .product-grid product-card {
+  position: relative;
+}
+
+body .collection-wrapper .card-gallery quick-add-component {
+  display: none;
+}
+
+.arette-card-add {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  z-index: var(--layer-raised, 2);
+  white-space: nowrap;
+}
+
+.arette-card-add quick-add-component {
+  position: static;
+  display: block;
+  pointer-events: auto;
+}
+
+body product-card .arette-card-add button.quick-add__button {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-inline-size: none;
+  height: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  color: var(--arette-brown, #7b5221);
+  font-family: var(--arette-font-sub, sans-serif);
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 1;
+  scale: none;
+  overflow: visible;
+  transition: color 0.3s ease;
+}
+
+body product-card .arette-card-add button.quick-add__button:is(:hover, :focus-visible, :active) {
+  width: max-content;
+  padding: 0;
+  color: var(--arette-green, #696d40);
+  scale: none;
+}
+
+body product-card .arette-card-add button.quick-add__button > .add-to-cart-icon {
+  display: none;
+}
+
+body product-card .arette-card-add button.quick-add__button[data-added='true'] {
+  width: max-content;
+  color: transparent;
+}
+
+/* Product cards: hover shadow, price row pinned to the card bottom, add link underline */
+body .product-grid product-card {
+  transition: box-shadow 0.4s ease;
+}
+
+body .product-grid product-card:is(:hover, :focus-within) {
+  box-shadow: 0 0 28px rgb(35 31 32 / 0.18);
+}
+
+/* Cards in a row share one height; the text block sits at the bottom, so title, price and
+   the add link are the same distance from the card bottom in every card. */
+body .product-grid .product-card__content {
+  height: 100%;
+}
+
+body .product-grid .product-card__content > .card-gallery {
+  margin-block-end: auto;
+}
+
+body product-card .arette-card-add button.quick-add__button:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .product-grid product-card {
+    transition: none;
+  }
+}
+
+/* Mobile collection grid: one product per row with a margin to the screen edges */
+@media screen and (max-width: 749px) {
+  body .collection-wrapper {
+    margin-inline: 1rem;
+    margin-block: 2rem 3rem;
+  }
+
+  body .collection-wrapper .product-grid.product-grid--grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Sale products: the crossed-out regular price is a bit smaller than the sale price */
+body .compare-at-price {
+  font-size: 0.85em;
+}
+
+body .product-grid .product-card .compare-at-price {
+  font-size: 0.9375rem;
+}

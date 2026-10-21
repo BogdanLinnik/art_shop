@@ -17,7 +17,8 @@
         "eyebrow": "",
         "show_description": true,
         "height": 460,
-        "height_mobile": 320
+        "height_mobile": 320,
+        "title": "Our tequilas"
       }
     },
     "main": {
@@ -94,7 +95,8 @@
                 "padding-block-start": 4,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "remove_prefix": "Arette"
               },
               "blocks": {}
             },
@@ -118,12 +120,17 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "arette_add": {
+              "type": "arette-card-add",
+              "settings": {}
             }
           },
           "block_order": [
             "card-gallery",
             "product_title_4nY4eT",
-            "price_EzJzMm"
+            "price_EzJzMm",
+            "arette_add"
           ]
         }
       },

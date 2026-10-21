@@ -41,7 +41,7 @@
       <p class="arette-collection-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {%- endif -%}
 
-    <h1 class="arette-collection-hero__title">{{ collection.title | escape }}</h1>
+    <h1 class="arette-collection-hero__title">{{ section.settings.title | default: collection.title | escape }}</h1>
 
     {%- if section.settings.show_description and collection.description != blank -%}
       <div class="arette-collection-hero__description">{{ collection.description }}</div>
@@ -162,6 +162,12 @@
       "unit": "%",
       "default": 45,
       "visible_if": "{{ section.settings.image != blank }}"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:settings.arette_banner_title",
+      "info": "t:info.arette_banner_title"
     },
     {
       "type": "text",

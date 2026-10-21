@@ -9,6 +9,7 @@
  */
 {
   "names": {
+    "arette_card_add": "Add link",
     "arette_cta_row": "Call to action row",
     "arette_collection_hero": "Collection banner",
     "arette_product_story": "Product story",
@@ -179,6 +180,8 @@
     "disclosures": "Upplysningar"
   },
   "settings": {
+    "arette_banner_title": "Title",
+    "arette_remove_prefix": "Remove from start of name",
     "arette_cart_color": "Cart and link color",
     "arette_hover_color": "Hover color",
     "arette_transparent_at_top": "Transparent at top of page",
@@ -1136,6 +1139,8 @@
     "disclosures": "Upplysningar"
   },
   "info": {
+    "arette_banner_title": "Leave empty to show the collection name.",
+    "arette_remove_prefix": "For example, entering Arette shows Arette Blanco as Blanco.",
     "arette_footer_link_url": "Leave empty to show the label as plain text.",
     "arette_top_text_color": "Used while the header is transparent above a banner image.",
     "arette_logo": "Defaults to the theme logo when empty.",
