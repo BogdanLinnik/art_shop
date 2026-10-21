@@ -1,0 +1,358 @@
+/*
+ * Tequila Arette brand layer.
+ * Source: docs/brand identity guideline.pdf
+ * Loaded after the palette/typography snippets so these tokens win over theme-editor defaults.
+ *
+ * Fonts: upload Prohibition, Guyot Text and Vinyl OT as .woff2 to assets/ (names below).
+ * Until then the fallback stacks are used. Prohibition is ALL-CAPS headlines only.
+ */
+
+@font-face {
+  font-family: 'Prohibition';
+  src: url('prohibition.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Guyot Text';
+  src: url('guyot-text.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vinyl OT';
+  src: url('vinyl-ot.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --arette-green: #476542;
+  --arette-cream: #eeede6;
+  --arette-sand: #f5f3ea;
+  --arette-gold: #b68841;
+  --arette-brown: #7b5221;
+  --arette-olive: #686d3f;
+  --arette-black: #231f20;
+
+  --arette-font-display: 'Prohibition', 'Oswald', 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  --arette-font-sub: 'Vinyl OT', 'Prohibition', 'Arial Narrow', sans-serif;
+  --arette-font-body: 'Guyot Text', Georgia, 'Times New Roman', serif;
+  --arette-font-alt: 'Montserrat', system-ui, sans-serif;
+
+  /* Page background/foreground come from the color_palette default in config/settings_schema.json */
+  --color-primary-button-text: var(--arette-cream);
+  --color-primary-button-background: var(--arette-green);
+  --color-primary-button-border: var(--arette-green);
+  --color-primary-button-hover-text: var(--arette-cream);
+  --color-primary-button-hover-background: var(--arette-black);
+  --color-primary-button-hover-border: var(--arette-black);
+
+  --color-secondary-button-text: var(--arette-green);
+  --color-secondary-button-background: transparent;
+  --color-secondary-button-border: var(--arette-green);
+  --color-secondary-button-hover-text: var(--arette-cream);
+  --color-secondary-button-hover-background: var(--arette-green);
+  --color-secondary-button-hover-border: var(--arette-green);
+
+  --color-input-background: #fff;
+  --color-input-text: var(--arette-black);
+  --color-input-border: rgb(35 31 32 / 0.35);
+
+  --font-body--family: var(--arette-font-body);
+  --font-body--weight: 400;
+  --font-body--style: normal;
+  --font-subheading--family: var(--arette-font-sub);
+  --font-subheading--weight: 400;
+  --font-heading--family: var(--arette-font-display);
+  --font-heading--weight: 400;
+  --font-heading--style: normal;
+  --font-accent--family: var(--arette-font-sub);
+  --font-accent--weight: 400;
+
+  --font-h1--case: uppercase;
+  --font-h2--case: uppercase;
+  --font-h3--case: uppercase;
+  --font-h1--letter-spacing: 0.03em;
+  --font-h2--letter-spacing: 0.03em;
+  --font-h3--letter-spacing: 0.03em;
+
+  --style-border-radius-buttons-primary: 0;
+  --style-border-radius-buttons-secondary: 0;
+  --style-border-radius-inputs: 0;
+  --style-border-radius-popover: 0;
+  --style-border-radius-pills: 0;
+}
+
+body {
+  background-color: var(--arette-sand);
+  color: var(--arette-black);
+}
+
+/*
+ * Interim palette bridge.
+ * Saved section colors in the dev theme still hold the white/black default palette, so sections
+ * render white. Remove this block once Theme settings > Colors is set to:
+ *   background #f5f3ea, text #231f20, accent 1 #476542, accent 2 #b68841.
+ */
+body .section-background[class*='color-custom-']:not([class*='color-custom-popover']),
+body .section[class*='color-custom-'],
+body .header__row[class*='color-custom-'] {
+  --color-background: var(--arette-sand);
+  --color-background-rgb: 245 243 234;
+  --color: var(--arette-black);
+  --color-rgb: 35 31 32;
+  --color-foreground: var(--arette-black);
+  --color-foreground-rgb: 35 31 32;
+  background-color: var(--color-background);
+}
+
+body [id*='header_announcements'] .section-background[class*='color-custom-'],
+body .announcement-bar[class*='color-custom-'] {
+  --color-background: var(--arette-green);
+  --color: var(--arette-cream);
+  --color-foreground: var(--arette-cream);
+  --color-rgb: 238 237 230;
+  --color-foreground-rgb: 238 237 230;
+}
+
+body .announcement-bar .announcement-bar__slide,
+body .announcement-bar .announcement-bar__slide .announcement-bar__text {
+  --color: var(--arette-cream);
+  color: var(--arette-cream);
+}
+
+/* Headlines: Prohibition, all caps only */
+h1,
+h2,
+h3,
+.h1,
+.h2,
+.h3 {
+  font-family: var(--arette-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--arette-green);
+}
+
+h4,
+h5,
+h6,
+.h4,
+.h5,
+.h6 {
+  font-family: var(--arette-font-sub);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Header */
+.header-section,
+.header-section .header {
+  background-color: var(--arette-sand);
+}
+
+.header-logo {
+  font-family: var(--arette-font-display);
+  color: var(--arette-green);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.header__row .menu-list__link,
+.header__row .menu-list__link-title {
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.875rem;
+}
+
+[id*='header_announcements'] {
+  background-color: var(--arette-green);
+  color: var(--arette-cream);
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* Collection page */
+.shopify-section-template--collection,
+[id^='shopify-section-template'][id$='__section'] h1 {
+  color: var(--arette-green);
+}
+
+[id^='shopify-section-template'][id$='__section'] h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
+.facets,
+.facets__summary,
+.facets__label {
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8125rem;
+}
+
+/* Product cards */
+.product-card {
+  --product-card-radius: 0;
+}
+
+.product-grid .product-card {
+  background: var(--arette-cream);
+  transition: transform var(--animation-speed, 0.25s) var(--animation-easing, ease);
+}
+
+.product-grid .product-card__content {
+  padding-block: 1rem 1.5rem;
+  padding-inline: 1rem;
+  text-align: center;
+  align-items: center;
+}
+
+.product-card h3,
+.product-card .product-card__title,
+.product-card [class*='title'] {
+  font-family: var(--arette-font-sub);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--arette-black);
+}
+
+.product-card .price,
+.product-card [class*='price'] {
+  font-family: var(--arette-font-body);
+  color: var(--arette-brown);
+}
+
+.product-badges__badge,
+[class*='product-badges'] {
+  background-color: var(--arette-gold);
+  color: var(--arette-black);
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 0;
+}
+
+/* Buttons */
+.button,
+button.button,
+a.button,
+.shopify-payment-button__button--unbranded {
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-radius: 0;
+}
+
+/* Product page */
+.product-information h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.product-information .price,
+.product-information [class*='price'] {
+  color: var(--arette-brown);
+  font-family: var(--arette-font-sub);
+  letter-spacing: 0.06em;
+}
+
+.product-information .variant-option__button-label,
+.product-information .variant-picker label {
+  border-radius: 0;
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.product-information .accordion,
+.product-information details {
+  border-color: rgb(35 31 32 / 0.2);
+}
+
+.product-information summary {
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Cart drawer */
+body .theme-drawer__dialog.color-custom-drawer {
+  --color-background: var(--arette-sand);
+  --color-background-rgb: 245 243 234;
+  --color: var(--arette-black);
+  --color-foreground: var(--arette-black);
+  --color-foreground-rgb: 35 31 32;
+  background-color: var(--arette-sand);
+  color: var(--arette-black);
+}
+
+.theme-drawer__title {
+  font-family: var(--arette-font-display);
+  font-size: 1.5rem;
+  color: var(--arette-green);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.cart-drawer .cart-items__table-row,
+.cart-drawer .cart-items__table {
+  border-color: rgb(35 31 32 / 0.15);
+}
+
+.cart-drawer .cart-items__title,
+.cart-drawer .cart-items__details a {
+  font-family: var(--arette-font-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cart-drawer .cart__checkout-button {
+  width: 100%;
+}
+
+/* Footer */
+footer,
+.footer-utilities {
+  background-color: var(--arette-green);
+  color: var(--arette-cream);
+}
+
+footer h2,
+footer h3 {
+  color: var(--arette-cream);
+}
+
+footer a {
+  color: var(--arette-cream);
+}
+
+footer .button {
+  --color-primary-button-background: var(--arette-gold);
+  --color-primary-button-border: var(--arette-gold);
+  --color-primary-button-text: var(--arette-black);
+  --color-primary-button-hover-background: var(--arette-cream);
+  --color-primary-button-hover-border: var(--arette-cream);
+  --color-primary-button-hover-text: var(--arette-black);
+}
+
+:focus-visible {
+  outline-color: var(--arette-gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-grid .product-card {
+    transition: none;
+  }
+}

@@ -63,8 +63,10 @@
         "type": "color_palette",
         "id": "color_palette",
         "default": {
-          "background": "#ffffff",
-          "foreground": "#000000"
+          "background": "#f5f3ea",
+          "foreground": "#231f20",
+          "color1": "#476542",
+          "color2": "#b68841"
         }
       }
     ]
