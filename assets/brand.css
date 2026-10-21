@@ -59,12 +59,12 @@
 }
 
 :root {
-  --arette-green: #476542;
+  --arette-green: #696d40;
   --arette-cream: #eeede6;
   --arette-sand: #f5f3ea;
   --arette-gold: #b68841;
   --arette-brown: #7b5221;
-  --arette-olive: #686d3f;
+  --arette-olive: #696d40;
   --arette-black: #231f20;
 
   --arette-font-display: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
@@ -182,12 +182,6 @@ h6,
 }
 
 /* Header */
-body .header-section .header__underlay,
-.header-section,
-.header-section .header {
-  background-color: var(--arette-sand);
-}
-
 .header-logo {
   font-family: var(--arette-font-display);
   color: var(--arette-green);
@@ -252,8 +246,9 @@ body .header-section .header__underlay,
 .product-card .product-card__title,
 .product-card [class*='title'] {
   font-family: var(--arette-font-sub);
-  font-size: 1rem;
-  letter-spacing: 0.1em;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
   color: var(--arette-black);
 }
 
@@ -383,5 +378,22 @@ footer .button {
 @media (prefers-reduced-motion: reduce) {
   .product-grid .product-card {
     transition: none;
+  }
+}
+
+/* Scroll reveal (arette-reveal.js): fade in over 1.5s, as on the parent site */
+.arette-reveal {
+  opacity: 0;
+}
+
+.arette-reveal.arette-reveal--visible {
+  opacity: 1;
+  transition: opacity 1.5s ease var(--arette-reveal-delay, 0.35s);
+}
+
+/* Collection grid: three products per row on larger screens */
+@media screen and (min-width: 750px) {
+  body .collection-wrapper .product-grid.product-grid--grid:not([product-grid-view='zoom-out']) {
+    --product-grid-columns-desktop: repeat(3, minmax(0, 1fr));
   }
 }

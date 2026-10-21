@@ -1,0 +1,199 @@
+{% comment %}
+  Section contract.
+  Collection page banner: full-width image with a darkening overlay, the collection title and
+  description on top. Falls back to a plain sand band when no image is chosen.
+  @example
+  <!-- First section in templates/collection.json -->
+{% endcomment %}
+
+{% liquid
+  assign image = section.settings.image
+  assign has_image = false
+  if image != blank
+    assign has_image = true
+  endif
+%}
+
+<section
+  class="arette-collection-hero{% if has_image %} arette-collection-hero--image{% endif %}"
+  style="
+    --arette-hero-height: {{ section.settings.height }}px;
+    --arette-hero-height-mobile: {{ section.settings.height_mobile }}px;
+    --arette-hero-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  "
+>
+  {%- if has_image -%}
+    {{
+      image
+      | image_url: width: 2800
+      | image_tag:
+        class: 'arette-collection-hero__image',
+        widths: '750, 1100, 1500, 2000, 2800',
+        sizes: '100vw',
+        alt: image.alt,
+        loading: 'eager',
+        fetchpriority: 'high'
+    }}
+  {%- endif -%}
+
+  <div class="arette-collection-hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="arette-collection-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+
+    <h1 class="arette-collection-hero__title">{{ collection.title | escape }}</h1>
+
+    {%- if section.settings.show_description and collection.description != blank -%}
+      <div class="arette-collection-hero__description">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .arette-collection-hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: var(--arette-hero-height-mobile);
+    padding: 3rem var(--page-margin, 1.25rem);
+    overflow: hidden;
+    color: var(--arette-black, #231f20);
+  }
+
+  .arette-collection-hero--image {
+    color: var(--arette-sand, #f5f3ea);
+  }
+
+  .arette-collection-hero--image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgb(35 31 32 / 0.6), transparent 45%),
+      linear-gradient(to top, rgb(35 31 32 / var(--arette-hero-overlay)), rgb(35 31 32 / 0.1));
+  }
+
+  .arette-collection-hero__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .arette-collection-hero__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 44rem;
+  }
+
+  .arette-collection-hero__eyebrow {
+    margin: 0;
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .arette-collection-hero .arette-collection-hero__title {
+    margin: 0;
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .arette-collection-hero:not(.arette-collection-hero--image) .arette-collection-hero__title {
+    color: var(--arette-green, #696d40);
+  }
+
+  .arette-collection-hero__description {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .arette-collection-hero__description p {
+    margin: 0;
+  }
+
+  /* The transparent header overlaps the banner, so the banner grows by the header's height. */
+  body:has(.arette-header--transparent) .arette-collection-hero {
+    min-height: calc(var(--arette-hero-height-mobile) + var(--header-height, 5.5rem));
+  }
+
+  @media screen and (min-width: 750px) {
+    .arette-collection-hero {
+      min-height: var(--arette-hero-height);
+      padding-block: 4rem;
+    }
+
+    body:has(.arette-header--transparent) .arette-collection-hero {
+      min-height: calc(var(--arette-hero-height) + var(--header-height, 5.5rem));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_collection_hero",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:settings.image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "t:settings.arette_overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 45,
+      "visible_if": "{{ section.settings.image != blank }}"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.arette_eyebrow"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "t:settings.arette_show_description",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "t:settings.desktop_height",
+      "min": 240,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "t:settings.mobile_height",
+      "min": 200,
+      "max": 520,
+      "step": 20,
+      "unit": "px",
+      "default": 320
+    }
+  ]
+}
+{% endschema %}

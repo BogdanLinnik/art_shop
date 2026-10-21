@@ -1,0 +1,445 @@
+{% comment %}
+  Section contract.
+  Arette footer: Instagram and back-to-top links around a monogram and location blocks,
+  a legal link row, the tagline and the copyright line. All links and copy are section settings.
+  @example
+  <!-- Lives in sections/footer-group.json as the only footer section -->
+{% endcomment %}
+
+<footer
+  class="arette-footer"
+  data-arette-reveal-group
+  style="
+    --arette-footer-background: {{ section.settings.background_color }};
+    --arette-footer-text: {{ section.settings.text_color }};
+    {% if section.settings.hover_color != blank %}--arette-footer-hover: {{ section.settings.hover_color }};{% endif %}
+  "
+>
+  <div class="arette-footer__main">
+    <div class="arette-footer__side arette-footer__side--start" data-arette-reveal>
+      {%- if section.settings.social_label != blank and section.settings.social_url != blank -%}
+        <a
+          href="{{ section.settings.social_url }}"
+          class="arette-footer__big-link"
+          target="_blank"
+          rel="noopener"
+        >
+          {{- section.settings.social_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="arette-footer__center" data-arette-reveal>
+      {%- if section.settings.show_monogram -%}
+        {%- if section.settings.monogram != blank -%}
+          {{
+            section.settings.monogram
+            | image_url: width: 200
+            | image_tag: class: 'arette-footer__monogram', widths: '100, 200', sizes: '50px', alt: '', loading: 'lazy'
+          }}
+        {%- else -%}
+          <span class="arette-footer__monogram arette-footer__monogram--svg" aria-hidden="true">
+            {{- 'icon-arette-monogram.svg' | inline_asset_content -}}
+          </span>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'location' -%}
+          <address class="arette-footer__location" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <span class="arette-footer__location-heading">{{ block.settings.heading | escape }}</span>
+            {%- endif -%}
+            {%- if block.settings.address != blank -%}
+              <span>{{ block.settings.address | escape | newline_to_br }}</span>
+            {%- endif -%}
+            {%- if block.settings.phone != blank -%}
+              <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone | escape }}</a>
+            {%- endif -%}
+          </address>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign has_links = false -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link' -%}
+          {%- assign has_links = true -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if has_links -%}
+        <ul class="arette-footer__links" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link' and block.settings.label != blank -%}
+              <li {{ block.shopify_attributes }}>
+                {%- if block.settings.url != blank -%}
+                  <a href="{{ block.settings.url }}">{{ block.settings.label | escape }}</a>
+                {%- else -%}
+                  <span>{{ block.settings.label | escape }}</span>
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="arette-footer__side arette-footer__side--end" data-arette-reveal>
+      {%- if section.settings.show_back_to_top and section.settings.back_to_top_label != blank -%}
+        <a href="#MainContent" class="arette-footer__big-link" data-arette-back-to-top>
+          {{- section.settings.back_to_top_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.tagline != blank -%}
+    <div class="arette-footer__band" data-arette-reveal>
+      <span class="arette-footer__diamond" aria-hidden="true"></span>
+      <p class="arette-footer__tagline">{{ section.settings.tagline | escape }}</p>
+      <span class="arette-footer__diamond" aria-hidden="true"></span>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.copyright != blank -%}
+    <div class="arette-footer__band arette-footer__band--legal" data-arette-reveal>
+      <p class="arette-footer__copyright">{{ section.settings.copyright | escape }}</p>
+    </div>
+  {%- endif -%}
+</footer>
+
+<script
+  type="module"
+  src="{{ 'arette-reveal.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+<script
+  type="module"
+  src="{{ 'arette-back-to-top.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-footer {
+    background-color: var(--arette-footer-background);
+    color: var(--arette-footer-text);
+    font-family: var(--arette-font-display, sans-serif);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .arette-footer a {
+    color: inherit;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .arette-footer a:hover,
+  .arette-footer a:focus-visible {
+    color: var(--arette-footer-hover, #b97b4d);
+  }
+
+  .arette-footer__main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding: 3rem var(--page-margin, 1.25rem);
+    text-align: center;
+  }
+
+  .arette-footer__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    order: -1;
+    font-size: 1.0625rem;
+    line-height: 1.25;
+  }
+
+  .arette-footer__monogram {
+    display: block;
+    width: auto;
+    height: 4.25rem;
+    color: var(--arette-gold, #b68841);
+  }
+
+  .arette-footer__monogram--svg svg {
+    display: block;
+    width: auto;
+    height: 100%;
+  }
+
+  .arette-footer__location {
+    display: flex;
+    flex-direction: column;
+    font-style: normal;
+  }
+
+  .arette-footer__location a {
+    text-decoration: none;
+  }
+
+  .arette-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .arette-footer__links li + li::before {
+    content: '/';
+    padding-inline: 0.5em;
+  }
+
+  .arette-footer__links a {
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arette-footer a {
+      transition: none;
+    }
+  }
+
+  .arette-footer__side {
+    display: flex;
+    justify-content: center;
+  }
+
+  .arette-footer__big-link {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .arette-footer__band {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2.5rem var(--page-margin, 1.25rem);
+  }
+
+  .arette-footer__band--legal {
+    padding-block: 2rem 3rem;
+  }
+
+  .arette-footer__tagline {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .arette-footer__copyright {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.25;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .arette-footer__diamond {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    background-color: currentcolor;
+    clip-path: polygon(
+      30% 0,
+      70% 0,
+      70% 15%,
+      85% 15%,
+      85% 30%,
+      100% 30%,
+      100% 70%,
+      85% 70%,
+      85% 85%,
+      70% 85%,
+      70% 100%,
+      30% 100%,
+      30% 85%,
+      15% 85%,
+      15% 70%,
+      0 70%,
+      0 30%,
+      15% 30%,
+      15% 15%,
+      30% 15%
+    );
+  }
+
+  @media screen and (min-width: 750px) {
+    .arette-footer__main {
+      grid-template-columns: 1fr auto 1fr;
+      gap: 3rem;
+    }
+
+    .arette-footer__center {
+      order: 0;
+    }
+
+    .arette-footer__side--start {
+      justify-content: flex-start;
+    }
+
+    .arette-footer__side--end {
+      justify-content: flex-end;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_footer",
+  "class": "arette-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.arette_footer_links"
+    },
+    {
+      "type": "text",
+      "id": "social_label",
+      "label": "t:settings.arette_social_label",
+      "default": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "social_url",
+      "label": "t:settings.arette_social_url"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_back_to_top",
+      "label": "t:settings.arette_show_back_to_top",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "back_to_top_label",
+      "label": "t:settings.arette_back_to_top_label",
+      "default": "Back to top",
+      "visible_if": "{{ section.settings.show_back_to_top }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.arette_footer_content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_monogram",
+      "label": "t:settings.arette_show_monogram",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "monogram",
+      "label": "t:settings.arette_monogram",
+      "info": "t:info.arette_monogram",
+      "visible_if": "{{ section.settings.show_monogram }}"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "t:settings.arette_tagline",
+      "default": "Drink less, drink better"
+    },
+    {
+      "type": "textarea",
+      "id": "copyright",
+      "label": "t:settings.arette_copyright",
+      "default": "2026© Tequila Arette de Jalisco S.A. de C.V., Fábrica de Tequila El Llano | D.R. |"
+    },
+    {
+      "type": "header",
+      "content": "t:content.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background",
+      "default": "#696d40"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#f5f3ea"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "t:settings.arette_hover_color",
+      "default": "#b97b4d"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "location",
+      "name": "t:names.arette_footer_location",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:settings.heading"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "t:settings.arette_address"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "t:settings.arette_phone"
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "t:names.arette_footer_link",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:settings.label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:settings.link",
+          "info": "t:info.arette_footer_link_url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.arette_footer",
+      "blocks": [
+        {
+          "type": "location"
+        },
+        {
+          "type": "link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

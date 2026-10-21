@@ -1,0 +1,709 @@
+{% comment %}
+  Section contract.
+  Arette header: "Book your visit" (optional) and collection links on the left, logo in the centre (links to the parent site),
+  cart on the right. Can stick to the top of the page.
+  @example
+  <!-- Lives in sections/header-group.json as the only header section -->
+{% endcomment %}
+
+{% liquid
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_url = section.settings.logo_url | default: routes.root_url
+  assign collection_url = section.settings.collection_url | default: routes.all_products_collection_url
+  assign is_collection_page = false
+  if template.name == 'collection' or template.name == 'list-collections'
+    assign is_collection_page = true
+  endif
+%}
+
+{% capture nav_links %}
+  {%- if section.settings.show_book_button and section.settings.book_label != blank -%}
+    <a
+      href="{{ section.settings.book_url | default: '#' }}"
+      class="arette-header__link"
+      {% if section.settings.book_new_tab %}
+        target="_blank"
+        rel="noopener"
+      {% endif %}
+    >
+      {{- section.settings.book_label | escape -}}
+    </a>
+  {%- endif -%}
+
+  {%- if section.settings.collection_label != blank -%}
+    <a
+      href="{{ collection_url }}"
+      class="arette-header__link{% if is_collection_page %} arette-header__link--current{% endif %}"
+      {% if is_collection_page %}
+        aria-current="page"
+      {% endif %}
+    >
+      {{- section.settings.collection_label | escape -}}
+    </a>
+  {%- endif -%}
+{% endcapture %}
+
+<header
+  id="header-component"
+  class="arette-header{% if section.settings.enable_sticky %} arette-header--sticky{% endif %}{% if section.settings.transparent_at_top %} arette-header--transparent{% endif %}"
+  style="
+    --arette-header-scrolled-opacity: {{ section.settings.scrolled_opacity | divided_by: 100.0 }};
+    {% if section.settings.top_text_color != blank %}--arette-header-top-text: {{ section.settings.top_text_color }};{% endif %}
+    --arette-header-logo-height: {{ section.settings.logo_height }}px;
+    --arette-header-logo-height-mobile: {{ section.settings.logo_height_mobile }}px;
+    {% if section.settings.background_color != blank %}--arette-header-background: {{ section.settings.background_color }};{% endif %}
+    {% if section.settings.text_color != blank %}--arette-header-text: {{ section.settings.text_color }};{% endif %}
+    {% if section.settings.cart_color != blank %}--arette-header-cart-color: {{ section.settings.cart_color }};{% endif %}
+    {% if section.settings.hover_color != blank %}--arette-header-hover-color: {{ section.settings.hover_color }};{% endif %}
+  "
+>
+  <div class="arette-header__inner">
+    <button
+      type="button"
+      class="arette-header__menu-button button-unstyled"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      aria-controls="arette-header-drawer"
+      aria-label="{{ 'accessibility.menu' | t }}"
+      data-arette-menu-open
+    >
+      <span class="svg-wrapper" aria-hidden="true">{{ 'icon-menu.svg' | inline_asset_content }}</span>
+    </button>
+
+    <nav class="arette-header__start" aria-label="{{ 'accessibility.header_navigation_label' | t }}">
+      {{- nav_links -}}
+    </nav>
+
+    <a
+      href="{{ logo_url }}"
+      class="arette-header__logo"
+      {% if section.settings.logo_new_tab %}
+        target="_blank"
+        rel="noopener"
+      {% endif %}
+    >
+      {%- if logo != blank -%}
+        {{
+          logo
+          | image_url: width: 600
+          | image_tag:
+            class: 'arette-header__logo-image',
+            widths: '240, 360, 480, 600',
+            sizes: '240px',
+            alt: logo.alt,
+            loading: 'eager',
+            fetchpriority: 'high'
+        }}
+      {%- else -%}
+        <span class="arette-header__logo-text">{{ shop.name | escape }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="arette-header__end">
+      <header-actions>
+        {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
+          <button
+            class="arette-header__cart button-unstyled"
+            on:click="#cart-drawer/toggle"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="cart-drawer"
+            aria-label="{{ 'accessibility.cart' | t }}"
+            aria-describedby="cart-bubble-text"
+            data-testid="cart-drawer-trigger"
+          >
+            <cart-icon
+              class="header-actions__cart-icon{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
+              data-testid="cart-icon"
+            >
+              <span class="svg-wrapper" aria-hidden="true">
+                {{ 'icon-cart.svg' | inline_asset_content }}
+              </span>
+              {% render 'cart-bubble', limit: 100 %}
+            </cart-icon>
+          </button>
+        {% else %}
+          <a
+            href="{{ routes.cart_url }}"
+            class="arette-header__cart"
+            aria-label="{{ 'accessibility.cart' | t }}"
+            aria-describedby="cart-bubble-text"
+          >
+            <cart-icon
+              class="header-actions__cart-icon{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
+              data-testid="cart-icon"
+            >
+              <span class="svg-wrapper" aria-hidden="true">
+                {{ 'icon-cart.svg' | inline_asset_content }}
+              </span>
+              {% render 'cart-bubble', limit: 100 %}
+            </cart-icon>
+          </a>
+        {% endif %}
+
+        <span
+          ref="liveRegion"
+          class="visually-hidden"
+          role="status"
+          data-testid="cart-count-live-region"
+        ></span>
+      </header-actions>
+    </div>
+  </div>
+</header>
+
+<dialog
+  id="arette-header-drawer"
+  class="arette-header__drawer"
+  aria-label="{{ 'accessibility.menu' | t }}"
+  style="
+    {% if section.settings.background_color != blank %}--arette-header-background: {{ section.settings.background_color }};{% endif %}
+    {% if section.settings.cart_color != blank %}--arette-header-cart-color: {{ section.settings.cart_color }};{% endif %}
+    {% if section.settings.hover_color != blank %}--arette-header-hover-color: {{ section.settings.hover_color }};{% endif %}
+  "
+>
+  <button
+    type="button"
+    class="arette-header__drawer-close button-unstyled"
+    aria-label="{{ 'accessibility.close_dialog' | t }}"
+    data-arette-menu-close
+  >
+    <span class="svg-wrapper" aria-hidden="true">{{ 'icon-close.svg' | inline_asset_content }}</span>
+  </button>
+
+  <nav class="arette-header__drawer-nav" aria-label="{{ 'accessibility.header_navigation_label' | t }}">
+    {{- nav_links -}}
+  </nav>
+</dialog>
+
+<script
+  type="module"
+  src="{{ 'cart-icon.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+<script
+  type="module"
+  src="{{ 'header-actions.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+<script
+  type="module"
+  src="{{ 'arette-header.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-header {
+    --arette-header-background: var(--arette-sand, #f5f3ea);
+    --arette-header-text: var(--arette-black, #231f20);
+
+    background-color: var(--arette-header-background);
+    color: var(--arette-header-text);
+    border-block-end: 1px solid rgb(35 31 32 / 0.12);
+  }
+
+  /* Transparent at the top of the page, then the header colour at the chosen opacity once scrolled. */
+  .arette-header--transparent {
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  .arette-header--transparent:not([data-scrolled]) {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .arette-header--transparent[data-scrolled] {
+    background-color: color-mix(
+      in srgb,
+      var(--arette-header-background) calc(var(--arette-header-scrolled-opacity) * 100%),
+      transparent
+    );
+    backdrop-filter: blur(8px);
+  }
+
+  /* Pages that open with a banner image: the banner runs underneath the transparent header. */
+  body:has(.arette-collection-hero) #header-group:has(.arette-header--transparent) {
+    margin-block-end: calc(var(--header-height, 5.5rem) * -1);
+  }
+
+  body:has(.arette-collection-hero--image) .arette-header--transparent:not([data-scrolled]) {
+    --arette-header-link: var(--arette-header-top-text, var(--arette-header-text));
+    --arette-header-hover: var(--arette-header-top-text, var(--arette-header-text));
+    --arette-header-bubble-text: var(--arette-black, #231f20);
+
+    color: var(--arette-header-top-text, var(--arette-header-text));
+  }
+
+  body:has(.arette-collection-hero--image) .arette-header--transparent:not([data-scrolled]) .arette-header__link:hover,
+  body:has(.arette-collection-hero--image) .arette-header--transparent:not([data-scrolled]) .arette-header__cart:hover {
+    opacity: 0.7;
+  }
+
+  /* The header group wrapper is the sticky element: its parent is the full-height page wrapper. */
+  #header-group:has(.arette-header--sticky) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--layer-sticky, 8);
+  }
+
+  .arette-header__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.5rem;
+    padding-block: 0.625rem;
+    padding-inline: 1rem;
+  }
+
+  .arette-header__start {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-self: start;
+    gap: 0.25rem 1rem;
+    min-width: 0;
+  }
+
+  .arette-header {
+    --arette-header-link: var(--arette-header-cart-color, var(--arette-brown, #7b5221));
+    --arette-header-hover: var(--arette-header-hover-color, var(--arette-green, #696d40));
+    --arette-header-bubble-text: var(--arette-sand, #f5f3ea);
+  }
+
+  .arette-header__link {
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--arette-header-link);
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .arette-header__link--current {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.4em;
+  }
+
+  .arette-header__link:hover,
+  .arette-header__link:focus-visible,
+  .arette-header__cart:hover,
+  .arette-header__cart:focus-visible {
+    color: var(--arette-header-hover);
+  }
+
+  .arette-header__menu-button,
+  .arette-header__drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: start;
+    min-width: 44px;
+    min-height: 44px;
+    margin-inline-start: calc((var(--arette-header-tap) - var(--arette-header-menu-size)) / -2);
+    color: var(--arette-header-link);
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .arette-header__menu-button .svg-wrapper,
+  .arette-header__drawer-close .svg-wrapper {
+    width: var(--arette-header-menu-size);
+    height: var(--arette-header-menu-size);
+  }
+
+  .arette-header__menu-button:hover,
+  .arette-header__menu-button:focus-visible,
+  .arette-header__drawer-close:hover,
+  .arette-header__drawer-close:focus-visible {
+    color: var(--arette-header-hover);
+  }
+
+  .arette-header__drawer {
+    --arette-header-link: var(--arette-header-cart-color, var(--arette-brown, #7b5221));
+    --arette-header-hover: var(--arette-header-hover-color, var(--arette-green, #696d40));
+
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(20rem, 85vw);
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 1rem 1.5rem 2rem;
+    border: 0;
+    background-color: var(--arette-header-background, var(--arette-sand, #f5f3ea));
+    color: var(--arette-header-link);
+    transform: translateX(0);
+    transition:
+      transform 0.35s ease,
+      display 0.35s allow-discrete,
+      overlay 0.35s allow-discrete;
+  }
+
+  .arette-header__drawer:not([open]) {
+    transform: translateX(-100%);
+  }
+
+  @starting-style {
+    .arette-header__drawer[open] {
+      transform: translateX(-100%);
+    }
+  }
+
+  .arette-header__drawer::backdrop {
+    background-color: rgb(35 31 32 / 0.5);
+  }
+
+  .arette-header__drawer-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .arette-header__drawer-nav .arette-header__link {
+    font-size: 1.5rem;
+  }
+
+  .arette-header__logo {
+    display: block;
+    justify-self: center;
+    line-height: 0;
+    color: inherit;
+  }
+
+  .arette-header__logo-image {
+    display: block;
+    width: auto;
+    height: var(--arette-header-logo-height-mobile);
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .arette-header__logo-text {
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .arette-header__end {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .arette-header__cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--arette-header-link);
+    cursor: pointer;
+    transition:
+      color 0.3s ease,
+      opacity 0.3s ease,
+      visibility 0.3s;
+  }
+
+  /* The item-count bubble follows the icon colour, including on hover. */
+  .arette-header cart-icon {
+    --cart-bubble-background: var(--arette-header-link);
+    --cart-bubble-text: var(--arette-header-bubble-text);
+
+    transition: color 0.3s ease;
+  }
+
+  .arette-header__cart:hover cart-icon,
+  .arette-header__cart:focus-visible cart-icon {
+    --cart-bubble-background: var(--arette-header-hover);
+  }
+
+  .arette-header {
+    --arette-header-tap: 44px;
+    --arette-header-cart-size: 22px;
+    --arette-header-menu-size: 24px;
+  }
+
+  /* Icons sit the same distance from the screen edge: the tap area is wider than the icon,
+     so each button is pulled outward by half of the difference. */
+  .arette-header__cart {
+    margin-inline-end: calc((var(--arette-header-tap) - var(--arette-header-cart-size)) / -2);
+  }
+
+  /* On desktop the cart drawer opens beside the header, so the cart icon steps aside while it is open. */
+  @media screen and (min-width: 750px) {
+    body:has(#cart-drawer[open]) .arette-header__cart {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  .arette-header__cart .svg-wrapper {
+    width: var(--arette-header-cart-size);
+    height: var(--arette-header-cart-size);
+  }
+
+  .arette-header__cart .svg-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .arette-header .header-actions__cart-icon {
+    --cart-bubble-size: 18px;
+    --cart-bubble-top: -2px;
+    --cart-bubble-right: -4px;
+
+    position: relative;
+  }
+
+  .arette-header .header-actions__cart-icon .cart-bubble {
+    position: absolute;
+    width: var(--cart-bubble-size, 20px);
+    top: var(--cart-bubble-top);
+    inset-inline-end: var(--cart-bubble-right);
+  }
+
+  .arette-header .header-actions__cart-icon .cart-bubble__text {
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
+  }
+
+  .arette-header .header-actions__cart-icon--has-cart svg {
+    /* Donut mask where the cart bubble sits */
+    mask: radial-gradient(
+      calc(var(--cart-bubble-size) + 2px) at calc(100% - var(--cart-bubble-right)) var(--cart-bubble-top),
+      transparent 45.45%,
+      #fff 45.45%,
+      #fff 100%
+    );
+  }
+
+  [dir='rtl'] .arette-header .header-actions__cart-icon--has-cart svg {
+    mask: radial-gradient(
+      calc(var(--cart-bubble-size) + 2px) at var(--cart-bubble-right) var(--cart-bubble-top),
+      transparent 45.45%,
+      #fff 45.45%,
+      #fff 100%
+    );
+  }
+
+  .arette-header cart-icon:has(.cart-bubble__text-count:empty) {
+    --cart-bubble-size: 10px;
+    --cart-bubble-top: 9px;
+    --cart-bubble-right: 9px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .arette-header__inner {
+      gap: var(--gap-md, 1rem);
+      padding-block: 1.625rem;
+      padding-inline: var(--page-margin, 1.25rem);
+    }
+
+    .arette-header__link {
+      font-size: 1.1875rem;
+      line-height: 26px;
+      letter-spacing: 0.14em;
+    }
+
+    .arette-header__start {
+      display: flex;
+      gap: 0.25rem 2rem;
+    }
+
+    .arette-header__menu-button,
+    .arette-header__drawer {
+      display: none;
+    }
+
+    .arette-header__logo-image {
+      height: var(--arette-header-logo-height);
+    }
+
+    .arette-header__end {
+      gap: 1.25rem;
+    }
+
+    .arette-header {
+      --arette-header-cart-size: 26px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arette-header__link,
+    .arette-header__cart,
+    .arette-header__menu-button,
+    .arette-header__drawer,
+    .arette-header__drawer-close,
+    .arette-header--transparent {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_header",
+  "class": "header-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.arette_header_logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:settings.arette_logo",
+      "info": "t:info.arette_logo"
+    },
+    {
+      "type": "url",
+      "id": "logo_url",
+      "label": "t:settings.arette_logo_url"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_new_tab",
+      "label": "t:settings.arette_open_new_tab",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "t:settings.desktop_height",
+      "min": 24,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "logo_height_mobile",
+      "label": "t:settings.mobile_height",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "t:content.arette_header_links"
+    },
+    {
+      "type": "text",
+      "id": "collection_label",
+      "label": "t:settings.arette_collection_label",
+      "default": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "collection_url",
+      "label": "t:settings.arette_collection_url",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_book_button",
+      "label": "t:settings.arette_show_book_button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "book_label",
+      "label": "t:settings.arette_book_label",
+      "default": "Book your visit",
+      "visible_if": "{{ section.settings.show_book_button }}"
+    },
+    {
+      "type": "url",
+      "id": "book_url",
+      "label": "t:settings.arette_book_url",
+      "visible_if": "{{ section.settings.show_book_button }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "book_new_tab",
+      "label": "t:settings.arette_open_new_tab",
+      "default": false,
+      "visible_if": "{{ section.settings.show_book_button }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.arette_header_behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "t:settings.arette_sticky_header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_at_top",
+      "label": "t:settings.arette_transparent_at_top",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scrolled_opacity",
+      "label": "t:settings.arette_scrolled_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 60,
+      "visible_if": "{{ section.settings.transparent_at_top }}"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background",
+      "default": "#f5f3ea"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#231f20"
+    },
+    {
+      "type": "color",
+      "id": "cart_color",
+      "label": "t:settings.arette_cart_color",
+      "default": "#7b5221"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "t:settings.arette_hover_color",
+      "default": "#696d40"
+    },
+    {
+      "type": "color",
+      "id": "top_text_color",
+      "label": "t:settings.arette_top_text_color",
+      "info": "t:info.arette_top_text_color",
+      "default": "#f5f3ea",
+      "visible_if": "{{ section.settings.transparent_at_top }}"
+    }
+  ]
+}
+{% endschema %}
