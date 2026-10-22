@@ -77,10 +77,6 @@
     --gallery-aspect-ratio: {{ ratio }};
   "
   data-product-id="{{ product.id }}"
-  {% if settings.show_second_image_on_hover and product.media.size > 1 %}
-    on:pointerenter="/previewImage"
-    on:pointerleave="/resetImage"
-  {% endif %}
   {% if settings.transition_to_main_product %}
     data-view-transition-to-main-product
   {% endif %}
@@ -114,7 +110,8 @@
 
         assign featured_media_class = media_class | replace: '[media_type]', featured_media.media_type | append: media_class_suffix
       %}
-      {%- if product.media.size == 1 -%}
+      {%- comment -%} Arette: cards always show only the featured image (no hover swap, no carousel). {%- endcomment -%}
+      {%- if product.media.size >= 1 -%}
         <div
           class="{{ featured_media_class }}"
           style="--product-media-fit: {{ media_fit | default: 'cover' }};"
