@@ -171,7 +171,7 @@
     <span class="svg-wrapper" aria-hidden="true">{{ 'icon-close.svg' | inline_asset_content }}</span>
   </button>
 
-  <nav class="arette-header__drawer-nav" aria-label="{{ 'accessibility.header_navigation_label' | t }}">
+  <nav class="arette-header__drawer-nav" tabindex="-1" autofocus aria-label="{{ 'accessibility.header_navigation_label' | t }}">
     {{- nav_links -}}
   </nav>
 </dialog>
@@ -373,6 +373,24 @@
 
   .arette-header__drawer::backdrop {
     background-color: rgb(35 31 32 / 0.5);
+  }
+
+  /* The menu opens with focus on the list itself (not the close button), and the buttons show no ring
+     for mouse or touch; keyboard focus keeps a visible outline. */
+  .arette-header__drawer-nav:focus {
+    outline: none;
+  }
+
+  .arette-header__drawer-close:focus:not(:focus-visible),
+  .arette-header__menu-button:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .arette-header__drawer-close:focus-visible,
+  .arette-header__menu-button:focus-visible {
+    outline: 2px solid var(--arette-header-hover, #696d40);
+    outline-offset: 2px;
   }
 
   .arette-header__drawer-nav {

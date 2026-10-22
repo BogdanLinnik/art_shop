@@ -15,6 +15,17 @@
       >
     {%- endif -%}
 
+    {%- comment -%}
+      The store's home page is not used: visitors go straight to the collection page. Skipped in the
+      theme editor, so the home template can still be opened there.
+    {%- endcomment -%}
+    {%- if template.name == 'index' and request.design_mode == false -%}
+      <meta http-equiv="refresh" content="0; url={{ routes.all_products_collection_url }}">
+      <script>
+        window.location.replace({{ routes.all_products_collection_url | json }});
+      </script>
+    {%- endif -%}
+
     {%- render 'view-transition-opt-in' -%}
 
     {%- render 'meta-tags' -%}
