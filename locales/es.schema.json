@@ -9,6 +9,8 @@
  */
 {
   "names": {
+    "arette_product_details": "Product details",
+    "arette_badge": "Badge",
     "arette_other_tequilas": "Other tequilas",
     "arette_card_add": "Add link",
     "arette_cta_row": "Call to action row",
@@ -181,6 +183,13 @@
     "disclosures": "Divulgaciones"
   },
   "settings": {
+    "arette_hide_quote_mobile": "Hide quote row on mobile",
+    "arette_texture_olive": "Panel texture: olive",
+    "arette_texture_gold": "Panel texture: gold",
+    "arette_emblem": "Panel emblem",
+    "arette_band_image": "Photo band background",
+    "arette_badge_label": "Badge name",
+    "arette_band_color": "Band color",
     "arette_no_margin_top": "No margin on top",
     "arette_no_margin_bottom": "No margin on bottom",
     "arette_no_space_between": "No space between story and quote",
@@ -923,6 +932,7 @@
     "input_field": "Campo de entrada"
   },
   "content": {
+    "arette_details_info": "Content comes from the product metafield custom.details (metaobject: Product details). Products without details show nothing.",
     "arette_story_info": "Content comes from the product metafield custom.story (metaobject: Product story). Products without a story show nothing.",
     "arette_header_logo": "Logo",
     "arette_header_links": "Links",
@@ -1153,6 +1163,7 @@
     "disclosures": "Divulgaciones"
   },
   "info": {
+    "arette_emblem": "A light horse emblem shown faintly behind the bottle.",
     "arette_banner_title": "Leave empty to show the collection name.",
     "arette_remove_prefix": "For example, entering Arette shows Arette Blanco as Blanco.",
     "arette_footer_link_url": "Leave empty to show the label as plain text.",

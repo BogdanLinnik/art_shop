@@ -1,0 +1,533 @@
+{% comment %}
+  Section contract.
+  Product details: tasting notes, the production facts table and the "Made with just agave, water and
+  time" photo strip, all read from a metaobject (definition `arette_product_details`) referenced by the
+  product metafield `custom.details`. Optional badge blocks (certifications) sit under the facts table.
+  Renders nothing when the product has no details assigned. See docs/product-details-metaobject.md.
+  @example
+  <!-- templates/product.json, between the story section and "Other tequilas" -->
+{% endcomment %}
+
+{% liquid
+  assign details = product.metafields.custom.details.value
+  assign steps = details.process_steps.value
+  assign bottle = details.bottle_image.value
+  assign panel_style = details.panel_style.value | downcase | strip
+  assign panel_texture = section.settings.texture_olive
+  if panel_style == 'gold'
+    assign panel_texture = section.settings.texture_gold
+  endif
+  assign has_facts = false
+  if details.facts_distillery.value != blank or details.facts_agave.value != blank or details.facts_aging.value != blank or details.facts_abv.value != blank
+    assign has_facts = true
+  endif
+%}
+
+{%- if details != blank -%}
+  <section
+    class="arette-details"
+    style="
+      --arette-details-background: {{ section.settings.background_color }};
+      --arette-details-heading: {{ section.settings.heading_color }};
+      --arette-details-band: {{ section.settings.band_color }};
+      --arette-details-padding: {{ section.settings.padding }}px;
+    "
+  >
+    {%- if details.tasting_notes.value != blank or has_facts -%}
+      <div class="arette-details__main{% if bottle != blank %} arette-details__main--panel{% endif %}" data-arette-reveal-group>
+        {%- if bottle != blank -%}
+          <div
+            class="arette-details__panel arette-details__panel--{% if panel_style == 'gold' %}gold{% elsif panel_style == 'photo' or panel_style == 'full photo' %}photo{% else %}olive{% endif %}"
+            {% if panel_texture != blank and panel_style != 'photo' and panel_style != 'full photo' %}
+              style="background-image: url('{{ panel_texture | image_url: width: 1600 }}');"
+            {% endif %}
+          >
+            {%- if section.settings.emblem != blank and panel_style != 'photo' and panel_style != 'full photo' -%}
+              {{
+                section.settings.emblem
+                | image_url: width: 600
+                | image_tag: class: 'arette-details__emblem', alt: '', loading: 'lazy'
+              }}
+            {%- endif -%}
+            {{
+              bottle
+              | image_url: height: 1200
+              | image_tag:
+                class: 'arette-details__bottle',
+                height: 600,
+                alt: bottle.alt,
+                loading: 'lazy'
+            }}
+          </div>
+        {%- endif -%}
+
+        <div class="arette-details__content">
+        {%- if details.tasting_notes.value != blank -%}
+          <div class="arette-details__tasting" data-arette-reveal>
+            <p class="arette-details__eyebrow">{{ 'content.arette_tasting_notes' | t }}</p>
+            <p class="arette-details__tasting-text">{{ details.tasting_notes.value | escape | newline_to_br }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- if has_facts -%}
+          <div class="arette-details__facts" data-arette-reveal>
+            <h2 class="arette-details__title">{{ 'content.arette_production_facts' | t }}</h2>
+            <dl class="arette-details__list">
+              {%- if details.facts_distillery.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_distillery' | t }}</dt>
+                  <dd>{{ details.facts_distillery.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_agave.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_agave' | t }}</dt>
+                  <dd>{{ details.facts_agave.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_fields.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_fields' | t }}</dt>
+                  <dd>{{ details.facts_fields.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_water.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_water' | t }}</dt>
+                  <dd>{{ details.facts_water.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_cooking.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_cooking' | t }}</dt>
+                  <dd>{{ details.facts_cooking.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_extraction.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_extraction' | t }}</dt>
+                  <dd>{{ details.facts_extraction.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_fermentation.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_fermentation' | t }}</dt>
+                  <dd>{{ details.facts_fermentation.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_distillation.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_distillation' | t }}</dt>
+                  <dd>{{ details.facts_distillation.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_aging.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_aging' | t }}</dt>
+                  <dd>{{ details.facts_aging.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_abv.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_abv' | t }}</dt>
+                  <dd>{{ details.facts_abv.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if details.facts_net_content.value != blank -%}
+                <div class="arette-details__row">
+                  <dt>{{ 'content.arette_fact_net_content' | t }}</dt>
+                  <dd>{{ details.facts_net_content.value | escape | newline_to_br }}</dd>
+                </div>
+              {%- endif -%}
+            </dl>
+
+            {%- if section.blocks.size > 0 -%}
+              <ul class="arette-details__badges" role="list">
+                {%- for block in section.blocks -%}
+                  {%- if block.settings.image != blank -%}
+                    <li {{ block.shopify_attributes }}>
+                      {{
+                        block.settings.image
+                        | image_url: height: 160
+                        | image_tag:
+                          class: 'arette-details__badge',
+                          height: 56,
+                          alt: block.settings.label,
+                          loading: 'lazy'
+                      }}
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if steps != blank -%}
+      <div
+        class="arette-details__process"
+        data-arette-reveal-group
+        {% if section.settings.band_image != blank %}
+          style="background-image: url('{{ section.settings.band_image | image_url: width: 1600 }}');"
+        {% endif %}
+      >
+        {%- if details.process_title.value != blank -%}
+          <h2 class="arette-details__process-title" data-arette-reveal>{{ details.process_title.value | escape }}</h2>
+        {%- endif -%}
+
+        <ul class="arette-details__steps" role="list" data-arette-reveal data-arette-auto-scroll>
+          {%- for step in steps -%}
+            <li class="arette-details__step">
+              {%- if step.image.value != blank -%}
+                {{
+                  step.image.value
+                  | image_url: width: 480
+                  | image_tag:
+                    class: 'arette-details__step-image',
+                    widths: '240, 360, 480',
+                    sizes: '(min-width: 750px) 140px, 40vw',
+                    alt: step.image.value.alt,
+                    loading: 'lazy'
+                }}
+              {%- endif -%}
+              <span class="arette-details__step-title">{{ step.title.value | escape }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+<script
+  type="module"
+  src="{{ 'arette-reveal.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+<script
+  type="module"
+  src="{{ 'arette-process-scroll.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-details {
+    background-color: var(--arette-details-background);
+    color: var(--arette-black, #231f20);
+  }
+
+  .arette-details__main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .arette-details__content {
+    display: grid;
+    gap: 2.5rem;
+    align-content: center;
+    max-width: 40rem;
+    margin-inline: auto;
+    padding: var(--arette-details-padding) var(--page-margin, 1.25rem);
+  }
+
+  /* Textured panel with the bottle's back label; olive or gold, chosen per product. */
+  .arette-details__panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30rem;
+    padding: 3rem 1rem;
+    overflow: hidden;
+    background-color: var(--arette-green, #696d40);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .arette-details__panel--gold {
+    background-color: var(--arette-gold, #b68841);
+  }
+
+  /* Full photo: the picture fills the whole panel, with no texture, emblem or shadow. */
+  .arette-details__panel--photo {
+    padding: 0;
+  }
+
+  .arette-details__panel--photo .arette-details__bottle {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    object-position: center 75%;
+    filter: none;
+  }
+
+  .arette-details__emblem {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    width: min(26rem, 80%);
+    height: auto;
+    opacity: 0.12;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .arette-details__bottle {
+    position: relative;
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: 26rem;
+    filter: drop-shadow(0 1.25rem 1.5rem rgb(0 0 0 / 0.35));
+  }
+
+  .arette-details__eyebrow {
+    margin: 0 0 1rem;
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--arette-details-heading);
+  }
+
+  .arette-details__tasting-text {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .arette-details .arette-details__title,
+  .arette-details .arette-details__process-title {
+    margin: 0 0 1.5rem;
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--arette-details-heading);
+  }
+
+  .arette-details__list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .arette-details__row {
+    display: grid;
+    grid-template-columns: minmax(7rem, 9.5rem) minmax(0, 1fr);
+    gap: 1rem;
+    padding-block-end: 0.75rem;
+    border-block-end: 1px solid rgb(35 31 32 / 0.12);
+  }
+
+  .arette-details__row dt {
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--arette-brown, #7b5221);
+  }
+
+  .arette-details__row dd {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .arette-details__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .arette-details__badge {
+    display: block;
+    width: auto;
+    height: 3.5rem;
+  }
+
+  /* Green band with the production process photos. */
+  .arette-details__process {
+    padding: 3.5rem var(--page-margin, 1.25rem);
+    background-color: var(--arette-details-band);
+    background-position: center;
+    background-size: cover;
+    color: var(--arette-sand, #f5f3ea);
+  }
+
+  .arette-details .arette-details__process-title {
+    max-width: 70rem;
+    margin: 0 auto 2rem;
+    color: inherit;
+    text-align: center;
+  }
+
+  .arette-details__steps {
+    display: flex;
+    gap: 1rem;
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .arette-details__steps::-webkit-scrollbar {
+    display: none;
+  }
+
+  .arette-details__step {
+    display: flex;
+    flex: 1 0 7.25rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .arette-details__step-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  .arette-details__step-title {
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 750px) {
+    .arette-details__main--panel {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    .arette-details__main--panel .arette-details__panel {
+      min-height: 100%;
+    }
+
+    .arette-details__main--panel .arette-details__content {
+      max-width: 44rem;
+      margin-inline: 0;
+      padding-inline: clamp(2rem, 5vw, 5rem);
+    }
+
+    .arette-details__panel:not(.arette-details__panel--photo) .arette-details__bottle {
+      max-height: 40rem;
+      height: 40rem;
+    }
+
+    .arette-details__process {
+      padding-block: 4.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_product_details",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "t:names.arette_badge",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:settings.image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:settings.arette_badge_label"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.arette_details_info"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_olive",
+      "label": "t:settings.arette_texture_olive"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_gold",
+      "label": "t:settings.arette_texture_gold"
+    },
+    {
+      "type": "image_picker",
+      "id": "emblem",
+      "label": "t:settings.arette_emblem",
+      "info": "t:info.arette_emblem"
+    },
+    {
+      "type": "image_picker",
+      "id": "band_image",
+      "label": "t:settings.arette_band_image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background",
+      "default": "#f5f3ea"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:settings.arette_heading_color",
+      "default": "#696d40"
+    },
+    {
+      "type": "color",
+      "id": "band_color",
+      "label": "t:settings.arette_band_color",
+      "default": "#696d40"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "t:settings.padding",
+      "min": 24,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 88
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.arette_product_details"
+    }
+  ]
+}
+{% endschema %}

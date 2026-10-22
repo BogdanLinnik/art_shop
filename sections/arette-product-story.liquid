@@ -19,6 +19,7 @@
     class="
       arette-story
       arette-story--quote-{{ section.settings.quote_row_order }}
+      {% if section.settings.hide_quote_mobile %}arette-story--hide-quote-mobile{% endif %}
       {% unless section.settings.no_margin_top %}arette-story--space-top{% endunless %}
       {% unless section.settings.no_margin_bottom %}arette-story--space-bottom{% endunless %}
       {% unless section.settings.no_space_between %}arette-story--space-between{% endunless %}
@@ -136,6 +137,12 @@
 
   .arette-story--space-between {
     gap: 3rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .arette-story--hide-quote-mobile .arette-story__inner--secondary {
+      display: none;
+    }
   }
 
   /* The quote row follows the story row by default; this places it above instead. */
@@ -376,6 +383,12 @@
       "id": "no_space_between",
       "label": "t:settings.arette_no_space_between",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_quote_mobile",
+      "label": "t:settings.arette_hide_quote_mobile",
+      "default": false
     },
     {
       "type": "select",

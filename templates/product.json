@@ -333,7 +333,7 @@
         "image_position": "end",
         "no_margin_top": false,
         "no_margin_bottom": true,
-        "no_space_between": false,
+        "no_space_between": true,
         "quote_row_order": "above",
         "quote_layout": "overlay",
         "quote_text_position": "top",
@@ -341,7 +341,45 @@
         "background_color": "#f5f3ea",
         "text_color": "#231f20",
         "overlay_text_color": "#f5f3ea",
-        "accent_color": "#696d40"
+        "accent_color": "#696d40",
+        "hide_quote_mobile": true
+      }
+    },
+    "arette_details": {
+      "type": "arette-product-details",
+      "blocks": {
+        "badge_esr": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-esr.png",
+            "label": "ESR"
+          }
+        },
+        "badge_practikosher": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-practikosher.png",
+            "label": "Practikosher"
+          }
+        },
+        "badge_mexico": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/badge-hecho-en-mexico.png",
+            "label": "Hecho en México"
+          }
+        }
+      },
+      "block_order": [
+        "badge_esr",
+        "badge_practikosher",
+        "badge_mexico"
+      ],
+      "settings": {
+        "background_color": "#f5f3ea",
+        "heading_color": "#696d40",
+        "band_color": "#696d40",
+        "padding": 88
       }
     },
     "arette_others": {
@@ -497,6 +535,7 @@
   "order": [
     "main",
     "arette_story",
+    "arette_details",
     "arette_others",
     "arette_cta"
   ]
