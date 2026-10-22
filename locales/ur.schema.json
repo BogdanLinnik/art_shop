@@ -259,6 +259,8 @@
     "media_type_info": "خصوصیات آپ کے مینو کے لنک سے پُر کی گئی ہیں"
   },
   "names": {
+    "arette_two_paths": "Two paths",
+    "arette_path": "Path",
     "arette_heritage": "Heritage intro",
     "arette_fact": "Fact",
     "arette_pairings": "Cocktail pairings",
@@ -725,6 +727,7 @@
     "below_media": "میڈیا کے نیچے"
   },
   "settings": {
+    "arette_description": "Description",
     "arette_figure": "Figure",
     "arette_drink": "Drink name",
     "arette_caption": "Caption",

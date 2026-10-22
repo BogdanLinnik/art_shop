@@ -267,6 +267,8 @@
     "media_type_info": "Features are populated from your menu links"
   },
   "names": {
+    "arette_two_paths": "Two paths",
+    "arette_path": "Path",
     "arette_heritage": "Heritage intro",
     "arette_fact": "Fact",
     "arette_pairings": "Cocktail pairings",
@@ -783,6 +785,7 @@
     "below_media": "Below media"
   },
   "settings": {
+    "arette_description": "Description",
     "arette_figure": "Figure",
     "arette_drink": "Drink name",
     "arette_caption": "Caption",

@@ -284,80 +284,36 @@
         "padding": 88
       }
     },
-    "strip": {
-      "type": "arette-photo-strip",
+    "paths": {
+      "type": "arette-two-paths",
       "blocks": {
-        "s1": {
-          "type": "photo",
+        "artesanal": {
+          "type": "path",
           "settings": {
-            "image": "shopify://shop_images/process-tequila-valley.jpg",
-            "caption": "The Tequila Valley"
+            "image": "shopify://shop_images/banner-artesanal-line.jpg",
+            "title": "Arette Artesanal",
+            "description": "A deep respect for traditional methods. Agaves are slowly cooked for 48 hours in stone and brick ovens, naturally fermented in open-air concrete tanks, and double-distilled in stainless steel pots."
           }
         },
-        "s2": {
-          "type": "photo",
+        "clasico": {
+          "type": "path",
           "settings": {
-            "image": "shopify://shop_images/process-agaves-7-years.jpg",
-            "caption": "7 Years Old Agaves"
-          }
-        },
-        "s3": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/process-deep-well-water.jpg",
-            "caption": "Deep Well Volcanic Water"
-          }
-        },
-        "s4": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/process-brick-ovens.jpg",
-            "caption": "Slow-cooked in Brick Ovens"
-          }
-        },
-        "s5": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/process-roller-mill.jpg",
-            "caption": "Roller Mill Extraction"
-          }
-        },
-        "s6": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/process-concrete-tanks.jpg",
-            "caption": "Open-Air Concrete Tanks"
-          }
-        },
-        "s7": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/process-distillation.jpg",
-            "caption": "Heart of the Distillation"
-          }
-        },
-        "s8": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/process-hand-labeled.jpg",
-            "caption": "Hand-Labeled"
+            "image": "shopify://shop_images/banner-clasico.jpg",
+            "title": "Arette Clásico",
+            "description": "Crafted for consistency, clarity and a clean expression of tequila. Agave is cooked for 14 hours in an autoclave, naturally fermented in open-air stainless steel tanks, and double-distilled."
           }
         }
       },
       "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4",
-        "s5",
-        "s6",
-        "s7",
-        "s8"
+        "artesanal",
+        "clasico"
       ],
       "settings": {
-        "heading": "Made with just agave, water and time",
-        "background_color": "#696d40",
-        "padding": 72
+        "heading": "Two paths, one philosophy",
+        "text": "For generations, master distillers Eduardo and Jaime Orendain, now representing the fourth generation, have upheld the highest standards of quality and authenticity.",
+        "background_color": "#f5f3ea",
+        "heading_color": "#696d40",
+        "padding": 88
       }
     }
   },
@@ -366,7 +322,7 @@
     "heritage",
     "main",
     "pairings",
-    "strip",
+    "paths",
     "arette_cta"
   ]
 }
