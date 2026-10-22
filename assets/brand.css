@@ -579,3 +579,10 @@ body .page-wrapper.page-wrapper--drawer-open {
   }
 }
 
+
+/* Collection grid on tablets: two products per row (three from 990px) */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  body .collection-wrapper .product-grid.product-grid--grid:not([product-grid-view='zoom-out']) {
+    --product-grid-columns-desktop: repeat(2, minmax(0, 1fr));
+  }
+}

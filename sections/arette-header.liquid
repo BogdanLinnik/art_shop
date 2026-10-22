@@ -176,6 +176,20 @@
   </nav>
 </dialog>
 
+{%- comment -%}
+  Measures the header before first paint, so the banner that slides under the transparent header
+  starts at the right offset instead of jumping once arette-header.js loads.
+{%- endcomment -%}
+<script>
+  (function () {
+    var header = document.getElementById('header-component');
+    var group = document.getElementById('header-group');
+    if (!header || !group) return;
+    document.body.style.setProperty('--header-height', header.offsetHeight + 'px');
+    document.body.style.setProperty('--header-group-height', group.offsetHeight + 'px');
+  })();
+</script>
+
 <script
   type="module"
   src="{{ 'cart-icon.js' | asset_url }}"
