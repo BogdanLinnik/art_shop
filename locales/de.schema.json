@@ -9,6 +9,12 @@
  */
 {
   "names": {
+    "arette_heritage": "Heritage intro",
+    "arette_fact": "Fact",
+    "arette_pairings": "Cocktail pairings",
+    "arette_pairing": "Pairing",
+    "arette_photo_strip": "Photo strip",
+    "arette_photo": "Photo",
     "arette_product_details": "Product details",
     "arette_badge": "Badge",
     "arette_other_tequilas": "Other tequilas",
@@ -183,6 +189,9 @@
     "disclosures": "Pflichtangaben"
   },
   "settings": {
+    "arette_figure": "Figure",
+    "arette_drink": "Drink name",
+    "arette_caption": "Caption",
     "arette_hide_quote_mobile": "Hide quote row on mobile",
     "arette_texture_olive": "Panel texture: olive",
     "arette_texture_gold": "Panel texture: gold",

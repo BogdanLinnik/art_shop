@@ -1,0 +1,160 @@
+{% comment %}
+  Section contract.
+  Heritage intro: eyebrow, heading and text, with a row of key facts (a big figure and a short label each).
+  Used above the product list on the collection page. Facts come from the section's blocks.
+  @example
+  <!-- templates/collection.json, between the banner and the product list -->
+{% endcomment %}
+
+<section
+  class="arette-heritage"
+  data-arette-reveal-group
+  style="
+    --arette-heritage-background: {{ section.settings.background_color }};
+    --arette-heritage-heading: {{ section.settings.heading_color }};
+    --arette-heritage-padding: {{ section.settings.padding }}px;
+  "
+>
+  <div class="arette-heritage__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="arette-heritage__eyebrow" data-arette-reveal>{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="arette-heritage__heading" data-arette-reveal>{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p class="arette-heritage__text" data-arette-reveal>{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="arette-heritage__facts" role="list" data-arette-reveal>
+        {%- for block in section.blocks -%}
+          <li class="arette-heritage__fact" {{ block.shopify_attributes }}>
+            <span class="arette-heritage__figure">{{ block.settings.figure | escape }}</span>
+            <span class="arette-heritage__label">{{ block.settings.label | escape }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+<script
+  type="module"
+  src="{{ 'arette-reveal.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-heritage {
+    padding: var(--arette-heritage-padding) var(--page-margin, 1.25rem);
+    background-color: var(--arette-heritage-background);
+    text-align: center;
+  }
+
+  .arette-heritage__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+
+  .arette-heritage__eyebrow {
+    margin: 0;
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--arette-brown, #7b5221);
+  }
+
+  .arette-heritage .arette-heritage__heading {
+    margin: 0;
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--arette-heritage-heading);
+  }
+
+  .arette-heritage__text {
+    margin: 0;
+    max-width: 40rem;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .arette-heritage__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1.5rem;
+    width: 100%;
+    margin: 1.5rem 0 0;
+    padding: 2rem 0 0;
+    border-block-start: 1px solid rgb(35 31 32 / 0.15);
+    list-style: none;
+  }
+
+  .arette-heritage__fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .arette-heritage__figure {
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: var(--arette-gold, #b68841);
+  }
+
+  .arette-heritage__label {
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  @media screen and (min-width: 750px) {
+    .arette-heritage__facts {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      grid-auto-flow: column;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_heritage",
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "t:names.arette_fact",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "figure", "label": "t:settings.arette_figure" },
+        { "type": "text", "id": "label", "label": "t:settings.label" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "t:settings.arette_eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:settings.heading" },
+    { "type": "textarea", "id": "text", "label": "t:settings.text" },
+    { "type": "color", "id": "background_color", "label": "t:settings.background", "default": "#f5f3ea" },
+    { "type": "color", "id": "heading_color", "label": "t:settings.arette_heading_color", "default": "#696d40" },
+    { "type": "range", "id": "padding", "label": "t:settings.padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 80 }
+  ],
+  "presets": [{ "name": "t:names.arette_heritage" }]
+}
+{% endschema %}

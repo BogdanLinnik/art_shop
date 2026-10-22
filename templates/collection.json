@@ -186,11 +186,187 @@
         "cta_instagram"
       ],
       "settings": {}
+    },
+    "heritage": {
+      "type": "arette-heritage",
+      "blocks": {
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "figure": "1900",
+            "label": "El Llano distillery founded"
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "figure": "1986",
+            "label": "Arette launched"
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "figure": "100%",
+            "label": "Estate blue Weber agave"
+          }
+        },
+        "f4": {
+          "type": "fact",
+          "settings": {
+            "figure": "NOM 1109",
+            "label": "Tequila, Jalisco"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "eyebrow": "Since 1900",
+        "heading": "A tequila that honors tradition",
+        "text": "Crafted at one of the oldest independent, family-run tequila distilleries, Arette was launched in 1986 by Eduardo and Jaime Orendain at El Llano. Named after Arete, the Olympic gold medal-winning horse, it represents excellence and heritage.",
+        "background_color": "#f5f3ea",
+        "heading_color": "#696d40",
+        "padding": 80
+      }
+    },
+    "pairings": {
+      "type": "arette-pairings",
+      "blocks": {
+        "p1": {
+          "type": "pairing",
+          "settings": {
+            "image": "shopify://shop_images/02-paloma.jpg",
+            "drink": "Paloma",
+            "product": "arette-artesanal-blanco"
+          }
+        },
+        "p2": {
+          "type": "pairing",
+          "settings": {
+            "image": "shopify://shop_images/01-margarita.jpg",
+            "drink": "Margarita",
+            "product": "arette-artesanal-reposado"
+          }
+        },
+        "p3": {
+          "type": "pairing",
+          "settings": {
+            "image": "shopify://shop_images/01-old-fashioned.jpg",
+            "drink": "Old Fashioned",
+            "product": "arette-artesanal-anejo"
+          }
+        },
+        "p4": {
+          "type": "pairing",
+          "settings": {
+            "image": "shopify://shop_images/02-martini.jpg",
+            "drink": "Martini",
+            "product": "arette-fuerte-artesanal-101-proof-blanco-tequila"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "heading": "Sip it your way",
+        "text": "Clean agave tequila shines in a simple drink. Pick a bottle and make it yours.",
+        "background_color": "#f5f3ea",
+        "heading_color": "#696d40",
+        "padding": 88
+      }
+    },
+    "strip": {
+      "type": "arette-photo-strip",
+      "blocks": {
+        "s1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-tequila-valley.jpg",
+            "caption": "The Tequila Valley"
+          }
+        },
+        "s2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-agaves-7-years.jpg",
+            "caption": "7 Years Old Agaves"
+          }
+        },
+        "s3": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-deep-well-water.jpg",
+            "caption": "Deep Well Volcanic Water"
+          }
+        },
+        "s4": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-brick-ovens.jpg",
+            "caption": "Slow-cooked in Brick Ovens"
+          }
+        },
+        "s5": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-roller-mill.jpg",
+            "caption": "Roller Mill Extraction"
+          }
+        },
+        "s6": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-concrete-tanks.jpg",
+            "caption": "Open-Air Concrete Tanks"
+          }
+        },
+        "s7": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-distillation.jpg",
+            "caption": "Heart of the Distillation"
+          }
+        },
+        "s8": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/process-hand-labeled.jpg",
+            "caption": "Hand-Labeled"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "settings": {
+        "heading": "Made with just agave, water and time",
+        "background_color": "#696d40",
+        "padding": 72
+      }
     }
   },
   "order": [
     "hero",
+    "heritage",
     "main",
+    "pairings",
+    "strip",
     "arette_cta"
   ]
 }

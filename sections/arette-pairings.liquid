@@ -1,0 +1,219 @@
+{% comment %}
+  Section contract.
+  "Sip it your way": photo cards of a bottle with its cocktail. Each card is a block with an image,
+  a drink name and a product, and links to that product's page. Used under the product list.
+  @example
+  <!-- templates/collection.json, below the product list -->
+{% endcomment %}
+
+<section
+  class="arette-pairings"
+  data-arette-reveal-group
+  style="
+    --arette-pairings-background: {{ section.settings.background_color }};
+    --arette-pairings-heading: {{ section.settings.heading_color }};
+    --arette-pairings-padding: {{ section.settings.padding }}px;
+  "
+>
+  <div class="arette-pairings__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="arette-pairings__heading" data-arette-reveal>{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p class="arette-pairings__text" data-arette-reveal>{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+
+    <ul class="arette-pairings__grid" role="list" data-arette-reveal>
+      {%- for block in section.blocks -%}
+        {%- assign linked = block.settings.product -%}
+        <li class="arette-pairings__item" {{ block.shopify_attributes }}>
+          <a
+            class="arette-pairings__card"
+            {% if linked != blank %}
+              href="{{ linked.url }}"
+            {% endif %}
+          >
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 900
+                | image_tag:
+                  class: 'arette-pairings__image',
+                  widths: '360, 540, 720, 900',
+                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                  alt: block.settings.image.alt,
+                  loading: 'lazy'
+              }}
+            {%- endif -%}
+            <span class="arette-pairings__caption">
+              <span class="arette-pairings__drink">{{ block.settings.drink | escape }}</span>
+              {%- if linked != blank -%}
+                <span class="arette-pairings__with">{{ linked.title | remove_first: 'Arette ' | escape }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+<script
+  type="module"
+  src="{{ 'arette-reveal.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-pairings {
+    padding: var(--arette-pairings-padding) var(--page-margin, 1.25rem);
+    background-color: var(--arette-pairings-background);
+  }
+
+  .arette-pairings__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 80rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .arette-pairings .arette-pairings__heading {
+    margin: 0;
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--arette-pairings-heading);
+  }
+
+  .arette-pairings__text {
+    margin: 0;
+    max-width: 38rem;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .arette-pairings__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .arette-pairings__card {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    color: var(--arette-sand, #f5f3ea);
+    text-decoration: none;
+  }
+
+  .arette-pairings__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition: transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .arette-pairings__card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(35 31 32 / 0.65), transparent 55%);
+    pointer-events: none;
+  }
+
+  .arette-pairings__caption {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.25rem;
+    text-align: start;
+  }
+
+  .arette-pairings__drink {
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .arette-pairings__with {
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+
+  .arette-pairings__card:is(:hover, :focus-visible) .arette-pairings__with {
+    color: var(--arette-gold, #b68841);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .arette-pairings__card:is(:hover, :focus-visible) .arette-pairings__image {
+      transform: scale(1.06);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .arette-pairings__caption {
+      padding: 0.75rem;
+    }
+
+    .arette-pairings__drink {
+      font-size: 1.25rem;
+    }
+
+    .arette-pairings__with {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .arette-pairings__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_pairings",
+  "blocks": [
+    {
+      "type": "pairing",
+      "name": "t:names.arette_pairing",
+      "limit": 8,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "t:settings.image" },
+        { "type": "text", "id": "drink", "label": "t:settings.arette_drink" },
+        { "type": "product", "id": "product", "label": "t:settings.product" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:settings.heading" },
+    { "type": "textarea", "id": "text", "label": "t:settings.text" },
+    { "type": "color", "id": "background_color", "label": "t:settings.background", "default": "#f5f3ea" },
+    { "type": "color", "id": "heading_color", "label": "t:settings.arette_heading_color", "default": "#696d40" },
+    { "type": "range", "id": "padding", "label": "t:settings.padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 88 }
+  ],
+  "presets": [{ "name": "t:names.arette_pairings" }]
+}
+{% endschema %}

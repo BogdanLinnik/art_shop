@@ -1,0 +1,137 @@
+{% comment %}
+  Section contract.
+  Photo strip on a coloured band: a title and a row of captioned photos (blocks). On mobile the row
+  scrolls sideways and advances by itself every 10 seconds (arette-process-scroll.js).
+  Used under the product list for "Made with just agave, water and time".
+  @example
+  <!-- templates/collection.json, below the product list -->
+{% endcomment %}
+
+<section
+  class="arette-strip"
+  data-arette-reveal-group
+  style="
+    --arette-strip-background: {{ section.settings.background_color }};
+    --arette-strip-padding: {{ section.settings.padding }}px;
+  "
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="arette-strip__heading" data-arette-reveal>{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <ul class="arette-strip__list" role="list" data-arette-reveal data-arette-auto-scroll>
+    {%- for block in section.blocks -%}
+      <li class="arette-strip__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          {{
+            block.settings.image
+            | image_url: width: 600
+            | image_tag:
+              class: 'arette-strip__image',
+              widths: '240, 360, 600',
+              sizes: '(min-width: 990px) 15vw, 40vw',
+              alt: block.settings.image.alt,
+              loading: 'lazy'
+          }}
+        {%- endif -%}
+        <span class="arette-strip__caption">{{ block.settings.caption | escape }}</span>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+<script
+  type="module"
+  src="{{ 'arette-reveal.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+<script
+  type="module"
+  src="{{ 'arette-process-scroll.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-strip {
+    padding: var(--arette-strip-padding) var(--page-margin, 1.25rem);
+    background-color: var(--arette-strip-background);
+    color: var(--arette-sand, #f5f3ea);
+  }
+
+  .arette-strip .arette-strip__heading {
+    max-width: 70rem;
+    margin: 0 auto 2rem;
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .arette-strip__list {
+    display: flex;
+    gap: 1rem;
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .arette-strip__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .arette-strip__item {
+    display: flex;
+    flex: 1 0 7.25rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .arette-strip__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  .arette-strip__caption {
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_photo_strip",
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "t:names.arette_photo",
+      "limit": 10,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "t:settings.image" },
+        { "type": "text", "id": "caption", "label": "t:settings.arette_caption" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:settings.heading" },
+    { "type": "color", "id": "background_color", "label": "t:settings.background", "default": "#696d40" },
+    { "type": "range", "id": "padding", "label": "t:settings.padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "presets": [{ "name": "t:names.arette_photo_strip" }]
+}
+{% endschema %}
