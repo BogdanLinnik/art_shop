@@ -12,6 +12,19 @@
   assign image_main = story.image.value
   assign image_second = story.image_secondary.value
   assign highlights = story.highlights.value
+
+  if section.settings.hide_images
+    assign image_main = blank
+    assign image_second = blank
+  endif
+
+  assign show_quote_row = false
+  if section.settings.hide_quote != true and story.quote.value != blank
+    assign show_quote_row = true
+  endif
+  if section.settings.hide_quote != true and image_second != blank
+    assign show_quote_row = true
+  endif
 %}
 
 {%- if story != blank -%}
@@ -20,6 +33,7 @@
       arette-story
       arette-story--quote-{{ section.settings.quote_row_order }}
       {% if section.settings.hide_quote_mobile %}arette-story--hide-quote-mobile{% endif %}
+      {% if section.settings.hide_images %}arette-story--no-images{% endif %}
       {% unless section.settings.no_margin_top %}arette-story--space-top{% endunless %}
       {% unless section.settings.no_margin_bottom %}arette-story--space-bottom{% endunless %}
       {% unless section.settings.no_space_between %}arette-story--space-between{% endunless %}
@@ -70,7 +84,7 @@
       {%- endif -%}
     </div>
 
-    {%- if story.quote.value != blank or image_second != blank -%}
+    {%- if show_quote_row -%}
       {%- if section.settings.quote_layout == 'overlay' and image_second != blank -%}
         {%- assign quote_row_class = 'arette-story__inner--overlay arette-story__inner--text-' | append: section.settings.quote_text_position -%}
       {%- else -%}
@@ -124,6 +138,29 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-items: stretch;
+    width: 100%;
+    max-width: 66rem;
+    margin-inline: auto;
+  }
+
+  /* No images: one centred column of text with a maximum width. */
+  .arette-story--no-images .arette-story__inner {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .arette-story--no-images .arette-story__copy,
+  .arette-story--no-images .arette-story__quote {
+    width: 100%;
+    max-width: 66rem;
+    margin-inline: auto;
+    padding: 4rem var(--page-margin, 1.25rem);
+    text-align: center;
+    align-items: center;
+  }
+
+  .arette-story--no-images .arette-story__highlights {
+    justify-content: center;
   }
 
   /* Optional spacing, off by default: above the first row, below the last row and between the two rows. */
@@ -132,7 +169,7 @@
   }
 
   .arette-story--space-bottom {
-    padding-block-end: 4rem;
+    padding-block-end: 6rem;
   }
 
   .arette-story--space-between {
@@ -383,6 +420,18 @@
       "id": "no_space_between",
       "label": "t:settings.arette_no_space_between",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_quote",
+      "label": "t:settings.arette_hide_quote",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_images",
+      "label": "t:settings.arette_hide_images",
+      "default": false
     },
     {
       "type": "checkbox",

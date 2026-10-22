@@ -191,6 +191,8 @@
     "disclosures": "Divulgations"
   },
   "settings": {
+    "arette_hide_quote": "Hide quote row",
+    "arette_hide_images": "Hide images",
     "arette_description": "Description",
     "arette_figure": "Figure",
     "arette_drink": "Drink name",

@@ -586,3 +586,59 @@ body .page-wrapper.page-wrapper--drawer-open {
     --product-grid-columns-desktop: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Product page, desktop: the gallery takes 2/5 of the width (1/2 on tablets) */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  body .product-information .product-information__grid.product-information--media-left:not(.product-information--media-none),
+  body .product-information .product-information__grid.product-information--media-left.product-information__grid--half {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  body .product-information .product-information__grid.product-information--media-left:not(.product-information--media-none),
+  body .product-information .product-information__grid.product-information--media-left.product-information__grid--half {
+    grid-template-columns: 9fr 11fr;
+  }
+}
+
+/* Sticky buy bar on desktop: appears as before, but sticks to the bottom and spans the full width */
+@media screen and (min-width: 750px) {
+  body .sticky-add-to-cart__bar {
+    inset-inline: 0;
+    inset-block-end: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    padding-block: 0.75rem;
+    padding-inline: var(--page-margin, 2.5rem);
+    border-radius: 0;
+    box-shadow: 0 -4px 20px rgb(35 31 32 / 0.12);
+    transform: translateY(calc(100% + 40px));
+  }
+
+  body .sticky-add-to-cart__bar[data-stuck='true'] {
+    transform: translateY(0);
+  }
+
+  body sticky-add-to-cart:not([data-variant-available='true']) .sticky-add-to-cart__bar {
+    transform: translateY(calc(100% + 40px));
+  }
+
+  body .sticky-add-to-cart__bar::before {
+    --border: 0px;
+
+    border-radius: 0;
+    border-block-start: 2px solid rgb(35 31 32 / 0.15);
+    inset: 0;
+  }
+}
+
+/* Product details column: paragraphs use the full column width; the buy buttons are capped at 600px */
+body .product-details .text-block.text-block > * {
+  max-width: 100%;
+}
+
+body .product-details .buy-buttons-block {
+  max-width: 600px;
+}
