@@ -9,6 +9,7 @@
  */
 {
   "names": {
+    "arette_other_tequilas": "Other tequilas",
     "arette_card_add": "Add link",
     "arette_cta_row": "Call to action row",
     "arette_collection_hero": "Collection banner",
@@ -180,6 +181,8 @@
     "disclosures": "Pflichtangaben"
   },
   "settings": {
+    "arette_quote_image_position": "Quote row: image position",
+    "arette_carousel_interval": "Seconds between slides",
     "arette_banner_title": "Title",
     "arette_remove_prefix": "Remove from start of name",
     "arette_cart_color": "Cart and link color",

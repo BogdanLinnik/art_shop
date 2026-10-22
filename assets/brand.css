@@ -434,7 +434,7 @@ body .product-grid product-card {
   position: relative;
 }
 
-body .collection-wrapper .card-gallery quick-add-component {
+body :is(.collection-wrapper, .arette-others) .card-gallery quick-add-component {
   display: none;
 }
 
@@ -501,8 +501,10 @@ body .product-grid product-card {
   transition: box-shadow 0.4s ease;
 }
 
-body .product-grid product-card:is(:hover, :focus-within) {
-  box-shadow: 0 0 28px rgb(35 31 32 / 0.18);
+@media screen and (min-width: 750px) and (hover: hover) {
+  body .product-grid product-card:is(:hover, :focus-within) {
+    box-shadow: 0 0 28px rgb(35 31 32 / 0.18);
+  }
 }
 
 /* Cards in a row share one height; the text block sits at the bottom, so title, price and
@@ -552,3 +554,16 @@ body .product-grid .product-card .compare-at-price {
 body .page-wrapper.page-wrapper--drawer-open {
   margin-inline-end: 0;
 }
+
+/* Sticky add-to-cart bar: the mobile bar gets the same 2px frame as the desktop bar */
+@media screen and (max-width: 749px) {
+  body .sticky-add-to-cart__bar::before {
+    --border: 2px;
+
+    /* A solid grey frame: the theme's translucent frame plus a brightness filter turns white over photos. */
+    background: linear-gradient(var(--color-background) 0 100%), linear-gradient(#d9d8d3 0 100%);
+    background-clip: content-box, border-box;
+    backdrop-filter: none;
+  }
+}
+

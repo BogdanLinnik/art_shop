@@ -17,14 +17,14 @@
 {%- if story != blank -%}
   <section
     data-arette-reveal-group
-    class="arette-story{% if section.settings.image_position == 'start' %} arette-story--image-start{% endif %}"
+    class="arette-story"
     style="
       --arette-story-background: {{ section.settings.background_color }};
       --arette-story-text: {{ section.settings.text_color }};
       --arette-story-accent: {{ section.settings.accent_color }};
     "
   >
-    <div class="arette-story__inner">
+    <div class="arette-story__inner arette-story__inner--image-{{ section.settings.image_position }}">
       <div class="arette-story__copy" data-arette-reveal>
         {%- if story.eyebrow.value != blank -%}
           <p class="arette-story__eyebrow">{{ story.eyebrow.value | escape }}</p>
@@ -64,7 +64,7 @@
     </div>
 
     {%- if story.quote.value != blank or image_second != blank -%}
-      <div class="arette-story__inner arette-story__inner--secondary">
+      <div class="arette-story__inner arette-story__inner--secondary arette-story__inner--image-{{ section.settings.quote_image_position }}">
         {%- if image_second != blank -%}
           <div class="arette-story__media" data-arette-reveal>
             {{
@@ -100,29 +100,28 @@
 ></script>
 
 {% stylesheet %}
+  /* Rows run edge to edge with no outer spacing: each image touches the section above and below it,
+     and the text column carries its own padding. */
   .arette-story {
     display: grid;
-    gap: 3rem;
-    padding: 4rem var(--page-margin, 1.25rem);
     background-color: var(--arette-story-background);
     color: var(--arette-story-text);
   }
 
   .arette-story__inner {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: center;
-    max-width: 80rem;
-    margin-inline: auto;
-    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
   }
 
-  .arette-story__copy {
+  .arette-story__copy,
+  .arette-story__quote {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1.25rem;
     min-width: 0;
+    padding: 3rem var(--page-margin, 1.25rem);
   }
 
   .arette-story__eyebrow {
@@ -177,22 +176,22 @@
 
   .arette-story__media {
     min-width: 0;
+    min-height: 0;
+    /* On mobile the image always comes before the text; desktop sets the side per row below. */
+    order: -1;
   }
 
   .arette-story__image {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
   }
 
   .arette-story__quote {
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 0;
+    align-items: flex-start;
   }
 
   .arette-story__quote blockquote {
@@ -214,26 +213,32 @@
   }
 
   @media screen and (min-width: 750px) {
-    .arette-story {
-      gap: 5rem;
-      padding-block: 6rem;
-    }
-
     .arette-story__inner {
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      min-height: 34rem;
     }
 
-    .arette-story--image-start .arette-story__inner:not(.arette-story__inner--secondary) .arette-story__media {
+    .arette-story__copy,
+    .arette-story__quote {
+      padding: 4rem clamp(2rem, 5vw, 5rem);
+    }
+
+    .arette-story__image {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+    }
+
+    .arette-story__media {
+      position: relative;
+    }
+
+    .arette-story__inner--image-start .arette-story__media {
       order: -1;
     }
 
-    .arette-story__inner--secondary .arette-story__media {
+    .arette-story__inner--image-end .arette-story__media {
       order: 1;
-    }
-
-    .arette-story--image-start .arette-story__inner--secondary .arette-story__media {
-      order: -1;
     }
   }
 {% endstylesheet %}
@@ -260,10 +265,20 @@
       "default": "end"
     },
     {
+      "type": "select",
+      "id": "quote_image_position",
+      "label": "t:settings.arette_quote_image_position",
+      "options": [
+        { "value": "start", "label": "t:options.left" },
+        { "value": "end", "label": "t:options.right" }
+      ],
+      "default": "start"
+    },
+    {
       "type": "color",
       "id": "background_color",
       "label": "t:settings.background",
-      "default": "#eeede6"
+      "default": "#f5f3ea"
     },
     {
       "type": "color",
