@@ -39,6 +39,7 @@
             "media_columns": "two",
             "image_gap": 4,
             "large_first_image": false,
+            "icons_style": "arrow",
             "slideshow_controls_style": "counter",
             "slideshow_mobile_controls_style": "dots",
             "thumbnail_position": "right",
@@ -117,6 +118,7 @@
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 0,
@@ -329,56 +331,18 @@
       "type": "arette-product-story",
       "settings": {
         "image_position": "end",
+        "no_margin_top": false,
+        "no_margin_bottom": true,
+        "no_space_between": false,
+        "quote_row_order": "above",
+        "quote_layout": "overlay",
+        "quote_text_position": "top",
+        "quote_image_position": "start",
         "background_color": "#f5f3ea",
         "text_color": "#231f20",
-        "accent_color": "#696d40",
-        "quote_image_position": "start",
-        "quote_layout": "overlay",
         "overlay_text_color": "#f5f3ea",
-        "quote_text_position": "top",
-        "quote_row_order": "above",
-        "no_margin_top": true,
-        "no_margin_bottom": true,
-        "no_space_between": true
+        "accent_color": "#696d40"
       }
-    },
-    "arette_cta": {
-      "type": "arette-cta",
-      "blocks": {
-        "cta_family": {
-          "type": "cta",
-          "settings": {
-            "heading": "Arette is not just tequila, it is a family tradition",
-            "text": "Arette embodies not just the spirit of our family but the soul of Tequila craftsmanship, ensuring that each bottle carries the essence of our heritage.",
-            "button_label": "Visit our distillery",
-            "button_url": "https://maps.app.goo.gl/ErWH1UjKLXdmzwf98",
-            "open_in_new_tab": true,
-            "background_color": "#f5f3ea",
-            "heading_color": "#b68841",
-            "text_color": "#7b5221",
-            "padding": 96
-          }
-        },
-        "cta_instagram": {
-          "type": "cta",
-          "settings": {
-            "eyebrow": "Share your history with us",
-            "heading": "Be part of the Arette family",
-            "button_label": "Join us at Instagram",
-            "button_url": "https://www.instagram.com/tequila_arette/",
-            "open_in_new_tab": true,
-            "background_color": "#ffffff",
-            "heading_color": "#696d40",
-            "text_color": "#7b5221",
-            "padding": 96
-          }
-        }
-      },
-      "block_order": [
-        "cta_family",
-        "cta_instagram"
-      ],
-      "settings": {}
     },
     "arette_others": {
       "type": "arette-other-tequilas",
@@ -422,6 +386,7 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
+                "remove_prefix": "Arette",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -439,8 +404,7 @@
                 "padding-block-start": 4,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "remove_prefix": "Arette"
+                "padding-inline-end": 0
               },
               "blocks": {}
             },
@@ -468,7 +432,8 @@
             },
             "arette_add": {
               "type": "arette-card-add",
-              "settings": {}
+              "settings": {},
+              "blocks": {}
             }
           },
           "block_order": [
@@ -487,6 +452,46 @@
         "heading_color": "#696d40",
         "padding": 88
       }
+    },
+    "arette_cta": {
+      "type": "arette-cta",
+      "blocks": {
+        "cta_family": {
+          "type": "cta",
+          "settings": {
+            "eyebrow": "",
+            "heading": "Arette is not just tequila, it is a family tradition",
+            "text": "Arette embodies not just the spirit of our family but the soul of Tequila craftsmanship, ensuring that each bottle carries the essence of our heritage.",
+            "button_label": "Visit our distillery",
+            "button_url": "https://maps.app.goo.gl/ErWH1UjKLXdmzwf98",
+            "open_in_new_tab": true,
+            "background_color": "#f5f3ea",
+            "heading_color": "#b68841",
+            "text_color": "#7b5221",
+            "padding": 96
+          }
+        },
+        "cta_instagram": {
+          "type": "cta",
+          "settings": {
+            "eyebrow": "Share your history with us",
+            "heading": "Be part of the Arette family",
+            "text": "",
+            "button_label": "Join us at Instagram",
+            "button_url": "https://www.instagram.com/tequila_arette/",
+            "open_in_new_tab": true,
+            "background_color": "#ffffff",
+            "heading_color": "#696d40",
+            "text_color": "#7b5221",
+            "padding": 96
+          }
+        }
+      },
+      "block_order": [
+        "cta_family",
+        "cta_instagram"
+      ],
+      "settings": {}
     }
   },
   "order": [
