@@ -381,14 +381,26 @@ footer .button {
   }
 }
 
-/* Scroll reveal (arette-reveal.js): fade in over 1.5s, as on the parent site */
+/* Scroll reveal (arette-reveal.js): fade in over 1.5s, as on the parent site.
+   data-arette-reveal="rise" also starts a little lower and slides up while it fades in. */
 .arette-reveal {
   opacity: 0;
+}
+
+.arette-reveal[data-arette-reveal='rise'] {
+  transform: translateY(1.75rem);
 }
 
 .arette-reveal.arette-reveal--visible {
   opacity: 1;
   transition: opacity 1.5s ease var(--arette-reveal-delay, 0.35s);
+}
+
+.arette-reveal[data-arette-reveal='rise'].arette-reveal--visible {
+  transform: none;
+  transition:
+    opacity 1.5s ease var(--arette-reveal-delay, 0.35s),
+    transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) var(--arette-reveal-delay, 0.35s);
 }
 
 /* Collection grid: three products per row on larger screens */

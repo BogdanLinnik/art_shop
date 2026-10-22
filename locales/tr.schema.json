@@ -181,6 +181,13 @@
     "disclosures": "Bildirimler"
   },
   "settings": {
+    "arette_no_margin_top": "No margin on top",
+    "arette_no_margin_bottom": "No margin on bottom",
+    "arette_no_space_between": "No space between story and quote",
+    "arette_quote_row_order": "Quote row position",
+    "arette_quote_text_position": "Text position",
+    "arette_quote_layout": "Quote row layout",
+    "arette_overlay_text_color": "Text color over image",
     "arette_quote_image_position": "Quote row: image position",
     "arette_carousel_interval": "Seconds between slides",
     "arette_banner_title": "Title",
@@ -630,6 +637,10 @@
     "title_preset": "Başlık ön ayarı"
   },
   "options": {
+    "arette_quote_below": "Below the story",
+    "arette_quote_above": "Above the story",
+    "arette_layout_split": "Image beside text",
+    "arette_layout_overlay": "Text over image",
     "apple": "Apple",
     "arrow": "Ok",
     "banana": "Muz",

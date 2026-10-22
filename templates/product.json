@@ -332,7 +332,14 @@
         "background_color": "#f5f3ea",
         "text_color": "#231f20",
         "accent_color": "#696d40",
-        "quote_image_position": "start"
+        "quote_image_position": "start",
+        "quote_layout": "overlay",
+        "overlay_text_color": "#f5f3ea",
+        "quote_text_position": "top",
+        "quote_row_order": "above",
+        "no_margin_top": true,
+        "no_margin_bottom": true,
+        "no_space_between": true
       }
     },
     "arette_cta": {

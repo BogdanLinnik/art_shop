@@ -16,15 +16,21 @@
 
 {%- if story != blank -%}
   <section
-    data-arette-reveal-group
-    class="arette-story"
+    class="
+      arette-story
+      arette-story--quote-{{ section.settings.quote_row_order }}
+      {% unless section.settings.no_margin_top %}arette-story--space-top{% endunless %}
+      {% unless section.settings.no_margin_bottom %}arette-story--space-bottom{% endunless %}
+      {% unless section.settings.no_space_between %}arette-story--space-between{% endunless %}
+    "
     style="
       --arette-story-background: {{ section.settings.background_color }};
       --arette-story-text: {{ section.settings.text_color }};
       --arette-story-accent: {{ section.settings.accent_color }};
+      --arette-story-overlay-text: {{ section.settings.overlay_text_color }};
     "
   >
-    <div class="arette-story__inner arette-story__inner--image-{{ section.settings.image_position }}">
+    <div class="arette-story__inner arette-story__inner--image-{{ section.settings.image_position }}" data-arette-reveal-group>
       <div class="arette-story__copy" data-arette-reveal>
         {%- if story.eyebrow.value != blank -%}
           <p class="arette-story__eyebrow">{{ story.eyebrow.value | escape }}</p>
@@ -64,9 +70,14 @@
     </div>
 
     {%- if story.quote.value != blank or image_second != blank -%}
-      <div class="arette-story__inner arette-story__inner--secondary arette-story__inner--image-{{ section.settings.quote_image_position }}">
+      {%- if section.settings.quote_layout == 'overlay' and image_second != blank -%}
+        {%- assign quote_row_class = 'arette-story__inner--overlay arette-story__inner--text-' | append: section.settings.quote_text_position -%}
+      {%- else -%}
+        {%- assign quote_row_class = 'arette-story__inner--image-' | append: section.settings.quote_image_position -%}
+      {%- endif -%}
+      <div class="arette-story__inner arette-story__inner--secondary {{ quote_row_class }}" data-arette-reveal-group>
         {%- if image_second != blank -%}
-          <div class="arette-story__media" data-arette-reveal>
+          <div class="arette-story__media">
             {{
               image_second
               | image_url: width: 1400
@@ -81,7 +92,7 @@
         {%- endif -%}
 
         {%- if story.quote.value != blank -%}
-          <figure class="arette-story__quote" data-arette-reveal>
+          <figure class="arette-story__quote" data-arette-reveal="rise">
             <blockquote>{{ story.quote.value | escape }}</blockquote>
             {%- if story.quote_attribution.value != blank -%}
               <figcaption>{{ story.quote_attribution.value | escape }}</figcaption>
@@ -112,6 +123,24 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-items: stretch;
+  }
+
+  /* Optional spacing, off by default: above the first row, below the last row and between the two rows. */
+  .arette-story--space-top {
+    padding-block-start: 4rem;
+  }
+
+  .arette-story--space-bottom {
+    padding-block-end: 4rem;
+  }
+
+  .arette-story--space-between {
+    gap: 3rem;
+  }
+
+  /* The quote row follows the story row by default; this places it above instead. */
+  .arette-story--quote-above .arette-story__inner--secondary {
+    order: -1;
   }
 
   .arette-story__copy,
@@ -212,6 +241,59 @@
     text-transform: uppercase;
   }
 
+  /* Quote row as a full-width image with the quote over it, near the bottom-start corner. */
+  .arette-story__inner--overlay {
+    position: relative;
+    align-items: end;
+    min-height: 28rem;
+    color: var(--arette-story-overlay-text);
+  }
+
+  .arette-story__inner--overlay .arette-story__media {
+    position: absolute;
+    inset: 0;
+    order: 0;
+  }
+
+  .arette-story__inner--overlay .arette-story__image {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  .arette-story__inner--overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(35 31 32 / 0.6), rgb(35 31 32 / 0.05) 70%);
+    pointer-events: none;
+  }
+
+  .arette-story__inner--overlay .arette-story__quote {
+    position: relative;
+    z-index: 1;
+    justify-content: flex-end;
+    max-width: 52rem;
+    padding: 2.5rem var(--page-margin, 1.25rem);
+  }
+
+  .arette-story__inner--overlay .arette-story__quote blockquote {
+    color: inherit;
+  }
+
+  /* Text at the top: the quote and the darkening gradient move to the top edge. */
+  .arette-story__inner--text-top {
+    align-items: start;
+  }
+
+  .arette-story__inner--text-top::after {
+    background: linear-gradient(to bottom, rgb(35 31 32 / 0.6), rgb(35 31 32 / 0.05) 70%);
+  }
+
+  .arette-story__inner--text-top .arette-story__quote {
+    justify-content: flex-start;
+  }
+
   @media screen and (min-width: 750px) {
     .arette-story__inner {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -240,6 +322,19 @@
     .arette-story__inner--image-end .arette-story__media {
       order: 1;
     }
+
+    .arette-story__inner--overlay {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 34rem;
+    }
+
+    .arette-story__inner--overlay .arette-story__media {
+      position: absolute;
+    }
+
+    .arette-story__inner--overlay .arette-story__quote {
+      padding: 4rem clamp(2rem, 5vw, 5rem);
+    }
   }
 {% endstylesheet %}
 
@@ -265,6 +360,55 @@
       "default": "end"
     },
     {
+      "type": "checkbox",
+      "id": "no_margin_top",
+      "label": "t:settings.arette_no_margin_top",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "no_margin_bottom",
+      "label": "t:settings.arette_no_margin_bottom",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "no_space_between",
+      "label": "t:settings.arette_no_space_between",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "quote_row_order",
+      "label": "t:settings.arette_quote_row_order",
+      "options": [
+        { "value": "below", "label": "t:options.arette_quote_below" },
+        { "value": "above", "label": "t:options.arette_quote_above" }
+      ],
+      "default": "below"
+    },
+    {
+      "type": "select",
+      "id": "quote_layout",
+      "label": "t:settings.arette_quote_layout",
+      "options": [
+        { "value": "split", "label": "t:options.arette_layout_split" },
+        { "value": "overlay", "label": "t:options.arette_layout_overlay" }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "select",
+      "id": "quote_text_position",
+      "label": "t:settings.arette_quote_text_position",
+      "options": [
+        { "value": "top", "label": "t:options.top" },
+        { "value": "bottom", "label": "t:options.bottom" }
+      ],
+      "default": "bottom",
+      "visible_if": "{{ section.settings.quote_layout == 'overlay' }}"
+    },
+    {
       "type": "select",
       "id": "quote_image_position",
       "label": "t:settings.arette_quote_image_position",
@@ -272,7 +416,8 @@
         { "value": "start", "label": "t:options.left" },
         { "value": "end", "label": "t:options.right" }
       ],
-      "default": "start"
+      "default": "start",
+      "visible_if": "{{ section.settings.quote_layout == 'split' }}"
     },
     {
       "type": "color",
@@ -285,6 +430,13 @@
       "id": "text_color",
       "label": "t:settings.text_color",
       "default": "#231f20"
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "t:settings.arette_overlay_text_color",
+      "default": "#f5f3ea",
+      "visible_if": "{{ section.settings.quote_layout == 'overlay' }}"
     },
     {
       "type": "color",
