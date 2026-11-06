@@ -229,9 +229,15 @@
   }
 
   .arette-story__body {
-    font-size: 1.0625rem;
+    font-size: 0.875rem;
     line-height: 1.7;
     text-wrap: pretty;
+  }
+
+  @media screen and (min-width: 750px) {
+    .arette-story__body {
+      font-size: 1rem;
+    }
   }
 
   .arette-story__body > :first-child {
