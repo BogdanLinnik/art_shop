@@ -231,6 +231,8 @@
     "work_quickly_to_ship": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>"
   },
   "info": {
+    "arette_text_align": "Desktop and tablet only. On mobile the text stays on the left.",
+    "arette_mobile_position": "Order on mobile screens (1 is first). 0 keeps the desktop order.",
     "arette_emblem": "A light horse emblem shown faintly behind the bottle.",
     "arette_banner_title": "Leave empty to show the collection name.",
     "arette_remove_prefix": "For example, entering Arette shows Arette Blanco as Blanco.",
@@ -267,6 +269,7 @@
     "media_type_info": "Features are populated from your menu links"
   },
   "names": {
+    "arette_message": "Message",
     "arette_two_paths": "Two paths",
     "arette_path": "Path",
     "arette_heritage": "Heritage intro",
@@ -785,6 +788,10 @@
     "below_media": "Below media"
   },
   "settings": {
+    "arette_text_align": "Text alignment",
+    "arette_mobile_position": "Mobile position",
+    "arette_padding_top": "Padding top",
+    "arette_padding_bottom": "Padding bottom",
     "arette_hide_quote": "Hide quote row",
     "arette_hide_images": "Hide images",
     "arette_description": "Description",

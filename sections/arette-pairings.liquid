@@ -13,6 +13,7 @@
     --arette-pairings-background: {{ section.settings.background_color }};
     --arette-pairings-heading: {{ section.settings.heading_color }};
     --arette-pairings-padding: {{ section.settings.padding }}px;
+    --arette-pairings-padding-top: {{ section.settings.padding_top }}px;
   "
 >
   <div class="arette-pairings__inner">
@@ -66,7 +67,7 @@
 
 {% stylesheet %}
   .arette-pairings {
-    padding: var(--arette-pairings-padding) var(--page-margin, 1.25rem);
+    padding: var(--arette-pairings-padding-top) var(--page-margin, 1.25rem) var(--arette-pairings-padding);
     background-color: var(--arette-pairings-background);
   }
 
@@ -172,6 +173,10 @@
   }
 
   @media screen and (max-width: 749px) {
+    .arette-pairings {
+      padding-block-start: min(var(--arette-pairings-padding-top), 1.25rem);
+    }
+
     .arette-pairings__caption {
       padding: 0.75rem;
     }
@@ -212,7 +217,8 @@
     { "type": "textarea", "id": "text", "label": "t:settings.text" },
     { "type": "color", "id": "background_color", "label": "t:settings.background", "default": "#f5f3ea" },
     { "type": "color", "id": "heading_color", "label": "t:settings.arette_heading_color", "default": "#696d40" },
-    { "type": "range", "id": "padding", "label": "t:settings.padding", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 88 }
+    { "type": "range", "id": "padding_top", "label": "t:settings.arette_padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding", "label": "t:settings.arette_padding_bottom", "min": 24, "max": 160, "step": 8, "unit": "px", "default": 88 }
   ],
   "presets": [{ "name": "t:names.arette_pairings" }]
 }

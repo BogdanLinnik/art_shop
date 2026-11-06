@@ -149,44 +149,6 @@
         "padding-block-end": 32
       }
     },
-    "arette_cta": {
-      "type": "arette-cta",
-      "blocks": {
-        "cta_family": {
-          "type": "cta",
-          "settings": {
-            "heading": "Arette is not just tequila, it is a family tradition",
-            "text": "Arette embodies not just the spirit of our family but the soul of Tequila craftsmanship, ensuring that each bottle carries the essence of our heritage.",
-            "button_label": "Visit our distillery",
-            "button_url": "https://maps.app.goo.gl/ErWH1UjKLXdmzwf98",
-            "open_in_new_tab": true,
-            "background_color": "#f5f3ea",
-            "heading_color": "#b68841",
-            "text_color": "#7b5221",
-            "padding": 96
-          }
-        },
-        "cta_instagram": {
-          "type": "cta",
-          "settings": {
-            "eyebrow": "Share your history with us",
-            "heading": "Be part of the Arette family",
-            "button_label": "Join us at Instagram",
-            "button_url": "https://www.instagram.com/tequila_arette/",
-            "open_in_new_tab": true,
-            "background_color": "#ffffff",
-            "heading_color": "#696d40",
-            "text_color": "#7b5221",
-            "padding": 96
-          }
-        }
-      },
-      "block_order": [
-        "cta_family",
-        "cta_instagram"
-      ],
-      "settings": {}
-    },
     "heritage": {
       "type": "arette-heritage",
       "blocks": {
@@ -281,7 +243,8 @@
         "text": "Clean agave tequila shines in a simple drink. Pick a bottle and make it yours.",
         "background_color": "#f5f3ea",
         "heading_color": "#696d40",
-        "padding": 88
+        "padding": 88,
+        "padding_top": 40
       }
     },
     "paths": {
@@ -292,7 +255,38 @@
           "settings": {
             "image": "shopify://shop_images/banner-artesanal-line.jpg",
             "title": "Arette Artesanal",
-            "description": "A deep respect for traditional methods. Agaves are slowly cooked for 48 hours in stone and brick ovens, naturally fermented in open-air concrete tanks, and double-distilled in stainless steel pots."
+            "description": "A deep respect for traditional methods. Agaves are slowly cooked for 48 hours in stone and brick ovens, naturally fermented in open-air concrete tanks, and double-distilled in stainless steel pots.",
+            "mobile_order": 1
+          }
+        },
+        "family": {
+          "type": "message",
+          "settings": {
+            "eyebrow": "",
+            "heading": "Arette is not just tequila, it is a family tradition",
+            "text": "Arette embodies not just the spirit of our family but the soul of Tequila craftsmanship, ensuring that each bottle carries the essence of our heritage.",
+            "button_label": "Visit our distillery",
+            "button_url": "https://maps.app.goo.gl/ErWH1UjKLXdmzwf98",
+            "open_in_new_tab": true,
+            "background_color": "#f5f3ea",
+            "heading_color": "#b68841",
+            "text_color": "#7b5221",
+            "mobile_order": 2
+          }
+        },
+        "instagram": {
+          "type": "message",
+          "settings": {
+            "eyebrow": "Share your history with us",
+            "heading": "Be part of the Arette family",
+            "text": "",
+            "button_label": "Join us at Instagram",
+            "button_url": "https://www.instagram.com/tequila_arette/",
+            "open_in_new_tab": true,
+            "background_color": "#f5f3ea",
+            "heading_color": "#696d40",
+            "text_color": "#7b5221",
+            "mobile_order": 4
           }
         },
         "clasico": {
@@ -300,12 +294,16 @@
           "settings": {
             "image": "shopify://shop_images/banner-clasico.jpg",
             "title": "Arette Clásico",
-            "description": "Crafted for consistency, clarity and a clean expression of tequila. Agave is cooked for 14 hours in an autoclave, naturally fermented in open-air stainless steel tanks, and double-distilled."
+            "description": "Crafted for consistency, clarity and a clean expression of tequila. Agave is cooked for 14 hours in an autoclave, naturally fermented in open-air stainless steel tanks, and double-distilled.",
+            "mobile_order": 3,
+            "text_align": "end"
           }
         }
       },
       "block_order": [
         "artesanal",
+        "family",
+        "instagram",
         "clasico"
       ],
       "settings": {
@@ -322,7 +320,6 @@
     "heritage",
     "main",
     "pairings",
-    "paths",
-    "arette_cta"
+    "paths"
   ]
 }

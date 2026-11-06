@@ -223,6 +223,8 @@
     "work_quickly_to_ship": "<p>ہم جلد از جلد آپ کا آرڈر شپ کرنے کے لیے تیزی سے کام کریں گے۔ آپ کا آرڈر شپ ہونے کے بعد، آپ کو مزید معلومات کے ساتھ ایک ای میل موصول ہوگی۔ آپ کے مقام کے لحاظ سے ترسیل کے اوقات مختلف ہو سکتے ہیں۔</p>"
   },
   "info": {
+    "arette_text_align": "Desktop and tablet only. On mobile the text stays on the left.",
+    "arette_mobile_position": "Order on mobile screens (1 is first). 0 keeps the desktop order.",
     "arette_emblem": "A light horse emblem shown faintly behind the bottle.",
     "arette_banner_title": "Leave empty to show the collection name.",
     "arette_remove_prefix": "For example, entering Arette shows Arette Blanco as Blanco.",
@@ -259,6 +261,7 @@
     "media_type_info": "خصوصیات آپ کے مینو کے لنک سے پُر کی گئی ہیں"
   },
   "names": {
+    "arette_message": "Message",
     "arette_two_paths": "Two paths",
     "arette_path": "Path",
     "arette_heritage": "Heritage intro",
@@ -727,6 +730,10 @@
     "below_media": "میڈیا کے نیچے"
   },
   "settings": {
+    "arette_text_align": "Text alignment",
+    "arette_mobile_position": "Mobile position",
+    "arette_padding_top": "Padding top",
+    "arette_padding_bottom": "Padding bottom",
     "arette_hide_quote": "Hide quote row",
     "arette_hide_images": "Hide images",
     "arette_description": "Description",

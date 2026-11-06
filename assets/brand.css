@@ -642,3 +642,28 @@ body .product-details .text-block.text-block > * {
 body .product-details .buy-buttons-block {
   max-width: 600px;
 }
+
+/* Mobile: product cards (collection and "Other tequilas") use the page background */
+@media screen and (max-width: 749px) {
+  body .product-grid .product-card {
+    background: transparent;
+  }
+}
+
+/* Collection page, mobile: smaller side margins and padding */
+@media screen and (max-width: 749px) {
+  body .collection-wrapper {
+    margin-inline: 0.5rem;
+  }
+
+  body .arette-heritage,
+  body .arette-pairings,
+  body .arette-paths__head {
+    padding-inline: 0.75rem;
+  }
+
+  body .arette-paths__content,
+  body .arette-paths__message {
+    padding-inline: 0.75rem;
+  }
+}

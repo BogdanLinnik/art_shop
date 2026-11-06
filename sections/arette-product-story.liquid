@@ -176,6 +176,16 @@
     gap: 3rem;
   }
 
+  /* Mobile: narrower side padding for the text blocks. */
+  @media screen and (max-width: 749px) {
+    .arette-story__copy,
+    .arette-story__quote,
+    .arette-story--no-images .arette-story__copy,
+    .arette-story--no-images .arette-story__quote {
+      padding-inline: 0.75rem;
+    }
+  }
+
   @media screen and (max-width: 749px) {
     .arette-story--hide-quote-mobile .arette-story__inner--secondary {
       display: none;
