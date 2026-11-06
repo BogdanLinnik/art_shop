@@ -195,6 +195,13 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
+
+  /* Mobile: tighter space below the cards. */
+  @media screen and (max-width: 749px) {
+    .arette-pairings {
+      padding-block-end: min(var(--arette-pairings-padding), 2.5rem);
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}

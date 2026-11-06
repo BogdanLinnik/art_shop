@@ -694,6 +694,12 @@ body .product-details .buy-buttons-block {
 @media screen and (max-width: 749px) {
   body .collection-wrapper {
     margin-inline: 0.5rem;
+    /* Less space between the last product and the section that follows (pairings). */
+    margin-block-end: 0;
+  }
+
+  body .product-grid-container {
+    --padding-block-end: 0.5rem !important;
   }
 
   body .arette-heritage,

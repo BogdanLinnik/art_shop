@@ -131,6 +131,13 @@
       grid-auto-flow: column;
     }
   }
+
+  /* Mobile: tighter vertical padding. */
+  @media screen and (max-width: 749px) {
+    .arette-heritage {
+      padding-block: min(var(--arette-heritage-padding), 2.5rem);
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}

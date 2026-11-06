@@ -323,6 +323,24 @@
       padding-inline: clamp(2rem, 4vw, 4rem);
     }
   }
+
+  /* Mobile: tighter space above the section and between the intro and the panels. */
+  @media screen and (max-width: 749px) {
+    .arette-paths {
+      padding-block-start: min(var(--arette-paths-padding), 2.5rem);
+    }
+
+    /* Same space below the intro as above the heading (pairings bottom padding + this section's top padding). */
+    .arette-paths__head {
+      margin-block-end: 5rem;
+    }
+
+    /* Message panels size to their content, with the same vertical padding as the CTA on the product page. */
+    .arette-paths__message {
+      min-height: 0;
+      padding-block: 3rem;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
