@@ -194,6 +194,9 @@
     "disclosures": "고지 사항"
   },
   "settings": {
+    "arette_mobile_carousel": "Carousel on mobile",
+    "arette_recipe_url": "Recipe file",
+    "arette_show_recipe": "Show recipe download button",
     "arette_show_separator": "Show separator",
     "arette_card_background": "Card background",
     "arette_card_text": "Card text color",
@@ -1191,6 +1194,8 @@
     "disclosures": "고지 사항"
   },
   "info": {
+    "arette_mobile_carousel": "On screens narrower than 750px the cards show one at a time in a swipeable carousel with dots, and it advances by itself.",
+    "arette_recipe_url": "Optional. Leave empty to use the recipe PDF that comes with the theme (all four cocktails). Link a separate file to give this drink its own recipe.",
     "arette_group_collection": "The products of this collection are shown in the grid.",
     "arette_show_separator": "A decorative line above the heading, to divide this group from the previous one.",
     "arette_card_colors": "Leave empty to keep the default card colors.",

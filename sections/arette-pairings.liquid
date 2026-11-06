@@ -1,13 +1,32 @@
 {% comment %}
   Section contract.
   "Sip it your way": photo cards of a bottle with its cocktail. Each card is a block with an image,
-  a drink name and a product, and links to that product's page. Used under the product list.
+  a drink name and a product. The photo links to the product page, and two buttons sit under it:
+  "Buy" and "Recipe", side by side. "Buy" adds the product to the cart (the theme's product form and cart
+  drawer), shows "Sold out" when the product is unavailable, and links to the product page ("Choose") for
+  products with several variants or selling plans, because the buyer has to pick the variant there.
+  "Carousel on mobile" turns the cards, below 750px, into the same carousel as the "Other tequilas" section: one
+  card at a time, infinite swipe, dots under it, and an automatic advance (assets/arette-carousel.js, mobile only).
+  The recipe button opens the block's own recipe file when one is set, otherwise the cocktail recipes PDF
+  shipped in assets/arette-cocktail-recipes.pdf. The section setting hides the recipe buttons.
   @example
   <!-- templates/collection.json, below the product list -->
 {% endcomment %}
 
+{% liquid
+  assign default_recipe_url = 'arette-cocktail-recipes.pdf' | asset_url
+  assign buy_text = 'content.arette_pairing_buy' | t
+  assign card_count = section.blocks.size
+  assign use_carousel = false
+  if section.settings.mobile_carousel and card_count > 1
+    assign use_carousel = true
+  endif
+%}
+
+{% render 'add-to-cart-button-styles' %}
+
 <section
-  class="arette-pairings"
+  class="arette-pairings{% if use_carousel %} arette-pairings--mobile-carousel{% endif %}"
   data-arette-reveal-group
   style="
     --arette-pairings-background: {{ section.settings.background_color }};
@@ -24,10 +43,36 @@
       <p class="arette-pairings__text" data-arette-reveal>{{ section.settings.text | escape }}</p>
     {%- endif -%}
 
-    <ul class="arette-pairings__grid" role="list" data-arette-reveal>
+    <div
+      class="arette-pairings__carousel"
+      {% if use_carousel %}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="{{ section.settings.heading | escape }}"
+        data-arette-carousel
+        data-arette-mobile-only
+        data-interval="{{ section.settings.interval }}"
+      {% endif %}
+      data-arette-reveal
+    >
+    <ul
+      class="arette-pairings__grid"
+      role="list"
+      {% if use_carousel %}
+        data-arette-carousel-track
+      {% endif %}
+    >
       {%- for block in section.blocks -%}
         {%- assign linked = block.settings.product -%}
-        <li class="arette-pairings__item" {{ block.shopify_attributes }}>
+        {%- assign recipe_url = block.settings.recipe_url | default: default_recipe_url -%}
+        {%- assign form_id = 'ArettePairing-ProductForm-' | append: linked.id | append: '-' | append: block.id -%}
+        <li
+          class="arette-pairings__item"
+          {% if use_carousel %}
+            data-arette-carousel-slide
+          {% endif %}
+          {{ block.shopify_attributes }}
+        >
           <a
             class="arette-pairings__card"
             {% if linked != blank %}
@@ -53,9 +98,85 @@
               {%- endif -%}
             </span>
           </a>
+
+          {%- if linked != blank or section.settings.show_recipe -%}
+            <div class="arette-pairings__actions">
+              {%- if linked != blank -%}
+                {%- assign variant = linked.selected_or_first_available_variant -%}
+                {%- if linked.available == false -%}
+                  <span class="arette-pairings__button arette-pairings__button--primary" aria-disabled="true">
+                    {{- 'products.product.sold_out' | t -}}
+                  </span>
+                {%- elsif linked.variants_count == 1 and linked.selling_plan_groups.size == 0 and linked.requires_selling_plan == false -%}
+                  <product-form-component
+                    class="arette-pairings__form"
+                    data-section-id="{{ section.id }}"
+                    data-product-id="{{ linked.id }}"
+                    on:submit="/handleSubmit"
+                  >
+                    <div
+                      class="visually-hidden"
+                      aria-live="assertive"
+                      role="status"
+                      aria-atomic="true"
+                      ref="liveRegion"
+                    ></div>
+                    {%- form 'product', linked, id: form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                      <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}">
+                      <input
+                        type="hidden"
+                        name="quantity"
+                        value="{% if variant.quantity_rule.min %}{{ variant.quantity_rule.min }}{% else %}1{% endif %}"
+                      >
+                      {% render 'add-to-cart-button',
+                        add_to_cart_text: buy_text,
+                        class: 'arette-pairings__button arette-pairings__button--primary add-to-cart-button',
+                        can_add_to_cart: true,
+                        show_icon: false,
+                        product: linked
+                      %}
+                    {%- endform -%}
+                  </product-form-component>
+                {%- else -%}
+                  <a class="arette-pairings__button arette-pairings__button--primary" href="{{ linked.url }}">
+                    {{- 'actions.choose' | t -}}
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+              {%- if section.settings.show_recipe -%}
+                <a
+                  class="arette-pairings__button arette-pairings__button--secondary"
+                  href="{{ recipe_url }}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {{- 'content.arette_pairing_recipe' | t -}}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
         </li>
       {%- endfor -%}
     </ul>
+
+    {%- if use_carousel -%}
+      <div class="arette-carousel-dots">
+        <div class="arette-carousel-dots__list">
+          {%- for i in (1..card_count) -%}
+            <button
+              type="button"
+              class="arette-carousel-dots__dot button-unstyled"
+              data-arette-carousel-dot="{{ forloop.index0 }}"
+              aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: card_count }}"
+              {% if forloop.first %}
+                aria-current="true"
+              {% endif %}
+            ></button>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+    </div>
   </div>
 </section>
 
@@ -64,6 +185,14 @@
   src="{{ 'arette-reveal.js' | asset_url }}"
   fetchpriority="low"
 ></script>
+{%- if section.settings.mobile_carousel -%}
+  <script
+    type="module"
+    src="{{ 'arette-carousel.js' | asset_url }}"
+    fetchpriority="low"
+  ></script>
+  {% render 'arette-carousel-dots-styles' %}
+{%- endif -%}
 
 {% stylesheet %}
   .arette-pairings {
@@ -97,6 +226,11 @@
     font-size: var(--arette-size-body, 1rem);
     line-height: 1.7;
     text-wrap: pretty;
+  }
+
+  .arette-pairings__carousel {
+    width: 100%;
+    min-width: 0;
   }
 
   .arette-pairings__grid {
@@ -166,6 +300,87 @@
     color: var(--arette-gold, #b68841);
   }
 
+  .arette-pairings__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  /* Equal-width columns however many buttons there are, whatever their padding or wrapper. */
+  .arette-pairings__actions {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .arette-pairings__form,
+  .arette-pairings__form form,
+  .arette-pairings__form add-to-cart-component {
+    display: block;
+    width: 100%;
+  }
+
+  .arette-pairings .arette-pairings__button {
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0.75rem 0.5rem;
+    border: 1px solid var(--arette-pairings-heading);
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .arette-pairings .arette-pairings__button--primary {
+    background-color: var(--arette-pairings-heading);
+    color: var(--arette-sand, #f5f3ea);
+  }
+
+  .arette-pairings .arette-pairings__button--secondary {
+    background-color: transparent;
+    color: var(--arette-pairings-heading);
+  }
+
+  .arette-pairings .arette-pairings__button--primary:is(a, button):is(:hover, :focus-visible) {
+    background-color: var(--arette-black, #231f20);
+    border-color: var(--arette-black, #231f20);
+  }
+
+  .arette-pairings a.arette-pairings__button--secondary:is(:hover, :focus-visible) {
+    background-color: var(--arette-pairings-heading);
+    color: var(--arette-sand, #f5f3ea);
+  }
+
+  .arette-pairings .arette-pairings__button:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
+
+  .arette-pairings .arette-pairings__button[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arette-pairings .arette-pairings__button {
+      transition: none;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .arette-pairings__card:is(:hover, :focus-visible) .arette-pairings__image {
       transform: scale(1.06);
@@ -196,6 +411,28 @@
     }
   }
 
+  /* Mobile carousel, same as "Other tequilas": one card at a time in a snapping row (assets/arette-carousel.js). */
+  @media screen and (max-width: 749px) {
+    .arette-pairings--mobile-carousel .arette-pairings__grid {
+      display: flex;
+      gap: 0;
+      margin-block-start: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .arette-pairings--mobile-carousel .arette-pairings__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .arette-pairings--mobile-carousel .arette-pairings__item {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
+  }
+
   /* Mobile: tighter space below the cards. */
   @media screen and (max-width: 749px) {
     .arette-pairings {
@@ -215,13 +452,17 @@
       "settings": [
         { "type": "image_picker", "id": "image", "label": "t:settings.image" },
         { "type": "text", "id": "drink", "label": "t:settings.arette_drink" },
-        { "type": "product", "id": "product", "label": "t:settings.product" }
+        { "type": "product", "id": "product", "label": "t:settings.product" },
+        { "type": "url", "id": "recipe_url", "label": "t:settings.arette_recipe_url", "info": "t:info.arette_recipe_url" }
       ]
     }
   ],
   "settings": [
     { "type": "text", "id": "heading", "label": "t:settings.heading" },
     { "type": "textarea", "id": "text", "label": "t:settings.text" },
+    { "type": "checkbox", "id": "show_recipe", "label": "t:settings.arette_show_recipe", "default": true },
+    { "type": "checkbox", "id": "mobile_carousel", "label": "t:settings.arette_mobile_carousel", "info": "t:info.arette_mobile_carousel", "default": false },
+    { "type": "range", "id": "interval", "label": "t:settings.arette_carousel_interval", "min": 3, "max": 20, "step": 1, "unit": "s", "default": 10, "visible_if": "{{ section.settings.mobile_carousel }}" },
     { "type": "color", "id": "background_color", "label": "t:settings.background", "default": "#f5f3ea" },
     { "type": "color", "id": "heading_color", "label": "t:settings.arette_heading_color", "default": "#696d40" },
     { "type": "range", "id": "padding_top", "label": "t:settings.arette_padding_top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },

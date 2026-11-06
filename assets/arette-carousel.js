@@ -6,6 +6,8 @@
  * - It auto-advances on a timer at every width. It pauses while the visitor touches, hovers or focuses
  *   the carousel or while the page is hidden, and never runs with reduced motion.
  * - With no more cards than fit on screen the carousel is not made infinite and the arrows stay hidden.
+ * - With `data-arette-mobile-only` on the root the carousel only exists on mobile: from 750px up the row is left
+ *   alone (no clones, no auto-advance), so the section can show an ordinary grid there.
  */
 const MOBILE_QUERY = '(max-width: 749px)';
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -38,6 +40,8 @@ const setup = (root) => {
   const mobile = window.matchMedia(MOBILE_QUERY);
   const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
   const interval = Math.max(3, Number(root.dataset.interval) || 10) * 1000;
+  const mobileOnly = root.hasAttribute('data-arette-mobile-only');
+  const active = () => !mobileOnly || mobile.matches;
 
   /** Cards that fit on screen at once. */
   let visible = mobile.matches ? 1 : 3;
@@ -88,7 +92,7 @@ const setup = (root) => {
   const build = () => {
     removeClones();
     visible = mobile.matches ? 1 : 3;
-    infinite = count > visible;
+    infinite = active() && count > visible;
     root.dataset.aretteInfinite = String(infinite);
     items = [...realSlides];
 
@@ -159,7 +163,7 @@ const setup = (root) => {
 
   const startAuto = () => {
     stopAuto();
-    if (reducedMotion.matches || interacting || document.hidden || count < 2) return;
+    if (!active() || reducedMotion.matches || interacting || document.hidden || count < 2) return;
 
     autoTimer = window.setInterval(() => move(1), interval);
   };

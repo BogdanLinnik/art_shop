@@ -1,0 +1,57 @@
+{%- doc -%}
+  Style owner for the dots bar of a mobile-only carousel (the `data-arette-carousel` markup driven by
+  assets/arette-carousel.js). The bar is hidden from 750px up, where the section shows an ordinary grid.
+  Render it from every section that outputs the `arette-carousel-dots` markup.
+
+  @example
+  {% render 'arette-carousel-dots-styles' %}
+{%- enddoc -%}
+
+{% stylesheet %}
+  .arette-carousel-dots {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .arette-carousel-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1rem 0.5rem;
+    }
+
+    .arette-carousel-dots__list {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .arette-carousel-dots__dot {
+      position: relative;
+      width: 0.875rem;
+      height: 0.875rem;
+      padding: 0;
+      border: 1px solid var(--arette-brown, #7b5221);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Larger touch target than the visible dot. */
+    .arette-carousel-dots__dot::after {
+      content: '';
+      position: absolute;
+      inset: -0.5rem;
+    }
+
+    .arette-carousel-dots__dot[aria-current='true'] {
+      background-color: var(--arette-brown, #7b5221);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arette-carousel-dots__dot {
+      transition: none;
+    }
+  }
+{% endstylesheet %}

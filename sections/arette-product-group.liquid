@@ -3,6 +3,8 @@
   A heading and a grid of the products of one collection, for pages that group the catalog by line
   (Clásico, Artesanal, ...). Place one section per group, in the order the page should show them.
   Optional decorative separator above the heading divides a group from the one before it.
+  "Carousel on mobile" turns the grid, below 750px, into the same carousel as the "Other tequilas" section: one card
+  at a time, infinite swipe, dots under it, and an automatic advance (assets/arette-carousel.js, mobile only).
   Cards come from the static `product-card` block, so they look like the main collection grid cards.
   Renders nothing when the section is hidden, no collection is selected or the collection has no products.
   Shows at most 50 products.
@@ -14,11 +16,16 @@
 {% liquid
   assign group = section.settings.collection
   assign group_products = group.products
+  assign shown = group_products.size | at_most: 50
+  assign use_carousel = false
+  if section.settings.mobile_carousel and shown > 1
+    assign use_carousel = true
+  endif
 %}
 
 {%- if section.settings.show_section and group != blank and group_products.size > 0 -%}
   <section
-    class="arette-group"
+    class="arette-group{% if use_carousel %} arette-group--mobile-carousel{% endif %}"
     style="
       --arette-group-heading: {{ section.settings.heading_color }};
       --arette-group-padding-top: {{ section.settings.padding_top }}px;
@@ -36,27 +43,63 @@
       <h2 class="arette-group__heading" data-arette-reveal>{{ section.settings.heading | escape }}</h2>
     {%- endif -%}
 
-    <div class="collection-wrapper">
-      <ul
-        class="product-grid product-grid--grid arette-group__grid"
-        role="list"
-        data-testid="product-grid"
-      >
-        {%- for product in group_products limit: 50 -%}
-          <li
-            id="{{ section.id }}-{{ product.id }}"
-            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-            data-product-id="{{ product.id }}"
-          >
-            {% content_for 'block',
-              type: '_product-card',
-              id: 'product-card',
-              closest.product: product,
-              product_view_context: 'collection'
-            %}
-          </li>
-        {%- endfor -%}
-      </ul>
+    <div
+      class="arette-group__carousel"
+      {% if use_carousel %}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="{{ section.settings.heading | escape }}"
+        data-arette-carousel
+        data-arette-mobile-only
+        data-interval="{{ section.settings.interval }}"
+      {% endif %}
+    >
+      <div class="collection-wrapper">
+        <ul
+          class="product-grid product-grid--grid arette-group__grid"
+          role="list"
+          data-testid="product-grid"
+          {% if use_carousel %}
+            data-arette-carousel-track
+          {% endif %}
+        >
+          {%- for product in group_products limit: 50 -%}
+            <li
+              id="{{ section.id }}-{{ product.id }}"
+              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+              data-product-id="{{ product.id }}"
+              {% if use_carousel %}
+                data-arette-carousel-slide
+              {% endif %}
+            >
+              {% content_for 'block',
+                type: '_product-card',
+                id: 'product-card',
+                closest.product: product,
+                product_view_context: 'collection'
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      {%- if use_carousel -%}
+        <div class="arette-carousel-dots">
+          <div class="arette-carousel-dots__list">
+            {%- for i in (1..shown) -%}
+              <button
+                type="button"
+                class="arette-carousel-dots__dot button-unstyled"
+                data-arette-carousel-dot="{{ forloop.index0 }}"
+                aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: shown }}"
+                {% if forloop.first %}
+                  aria-current="true"
+                {% endif %}
+              ></button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
     </div>
   </section>
 {%- endif -%}
@@ -66,6 +109,14 @@
   src="{{ 'arette-reveal.js' | asset_url }}"
   fetchpriority="low"
 ></script>
+{%- if section.settings.mobile_carousel -%}
+  <script
+    type="module"
+    src="{{ 'arette-carousel.js' | asset_url }}"
+    fetchpriority="low"
+  ></script>
+  {% render 'arette-carousel-dots-styles' %}
+{%- endif -%}
 
 {% stylesheet %}
   .arette-group {
@@ -158,6 +209,25 @@
       margin-block-end: 1.25rem;
       padding-inline: var(--page-margin, 1.25rem);
     }
+
+    /* Mobile carousel, same as "Other tequilas": one card at a time in a snapping row (assets/arette-carousel.js). */
+    .arette-group--mobile-carousel .arette-group__grid {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .arette-group--mobile-carousel .arette-group__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .arette-group--mobile-carousel .arette-group__grid .product-grid__item {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
   }
 {% endstylesheet %}
 
@@ -196,6 +266,24 @@
       "label": "t:settings.arette_show_separator",
       "info": "t:info.arette_show_separator",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel",
+      "label": "t:settings.arette_mobile_carousel",
+      "info": "t:info.arette_mobile_carousel",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "t:settings.arette_carousel_interval",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "unit": "s",
+      "default": 10,
+      "visible_if": "{{ section.settings.mobile_carousel }}"
     },
     {
       "type": "header",
