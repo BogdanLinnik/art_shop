@@ -231,6 +231,7 @@
     "work_quickly_to_ship": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>"
   },
   "info": {
+    "arette_description": "The first paragraph stays visible. Other paragraphs go into accordion rows: paragraphs before the first bulleted list under the production title, the list under the tasting title, and paragraphs after it under the serving title.",
     "arette_text_align": "Desktop and tablet only. On mobile the text stays on the left.",
     "arette_mobile_position": "Order on mobile screens (1 is first). 0 keeps the desktop order.",
     "arette_emblem": "A light horse emblem shown faintly behind the bottle.",
@@ -269,6 +270,7 @@
     "media_type_info": "Features are populated from your menu links"
   },
   "names": {
+    "arette_description": "Product description (accordions)",
     "arette_message": "Message",
     "arette_two_paths": "Two paths",
     "arette_path": "Path",
@@ -788,6 +790,9 @@
     "below_media": "Below media"
   },
   "settings": {
+    "arette_accordion_production": "Production row title",
+    "arette_accordion_tasting": "Tasting row title",
+    "arette_accordion_serving": "Serving row title",
     "arette_text_align": "Text alignment",
     "arette_mobile_position": "Mobile position",
     "arette_padding_top": "Padding top",

@@ -1,0 +1,227 @@
+{% doc %}
+  Product description with the first paragraph visible and the rest folded into accordion rows.
+
+  The description HTML is split by structure, so merchants keep editing a normal product description:
+  - the first paragraph stays visible;
+  - the other paragraphs before the first bulleted list form the "production" row;
+  - the first bulleted list (for example Nose / Palate / Finish) forms the "tasting" row;
+  - the paragraphs after the list form the "serving" row.
+  Without a list, the remaining paragraphs all go into the "production" row. Empty rows are not rendered,
+  and a description with a single paragraph renders as plain text.
+
+  @example
+  <!-- templates/product.json, replaces the text block that renders {{ closest.product.description }} -->
+{% enddoc %}
+
+{% liquid
+  assign html = block.settings.text | strip
+  assign intro = ''
+  assign production = ''
+  assign tasting = ''
+  assign serving = ''
+
+  if html != blank
+    assign list_start = html | split: '<ul'
+    assign before_list = list_start[0]
+    assign list_html = ''
+    assign after_list = ''
+
+    if list_start.size > 1
+      assign list_rest = list_start | slice: 1, 100 | join: '<ul'
+      assign list_end = list_rest | split: '</ul>'
+      assign list_html = '<ul' | append: list_end[0] | append: '</ul>'
+      assign after_list = list_end | slice: 1, 100 | join: '</ul>'
+    endif
+
+    assign before_parts = before_list | split: '</p>'
+    assign intro_taken = false
+    for part in before_parts
+      assign visible = part | strip_html | strip
+      if visible != blank
+        assign piece = part | append: '</p>'
+        if intro_taken == false
+          assign intro = piece
+          assign intro_taken = true
+        else
+          assign production = production | append: piece
+        endif
+      endif
+    endfor
+
+    assign tasting = list_html
+
+    assign after_parts = after_list | split: '</p>'
+    for part in after_parts
+      assign visible = part | strip_html | strip
+      if visible != blank
+        assign serving = serving | append: part | append: '</p>'
+      endif
+    endfor
+  endif
+
+  assign rows_count = 0
+  if production != blank
+    assign rows_count = rows_count | plus: 1
+  endif
+  if tasting != blank
+    assign rows_count = rows_count | plus: 1
+  endif
+  if serving != blank
+    assign rows_count = rows_count | plus: 1
+  endif
+%}
+
+{% if html != blank %}
+  <div class="arette-description" {{ block.shopify_attributes }}>
+    {% if rows_count == 0 %}
+      <rte-formatter class="text-block rte arette-description__intro">{{ html }}</rte-formatter>
+    {% else %}
+      <rte-formatter class="text-block rte arette-description__intro">{{ intro }}</rte-formatter>
+
+      <div class="arette-description__rows">
+        {% if production != blank %}
+          <details class="arette-description__row">
+            <summary class="arette-description__summary">
+              <span>{{ block.settings.title_production | escape }}</span>
+              <span class="arette-description__caret" aria-hidden="true"></span>
+            </summary>
+            <rte-formatter class="text-block rte arette-description__content">{{ production }}</rte-formatter>
+          </details>
+        {% endif %}
+
+        {% if tasting != blank %}
+          <details class="arette-description__row">
+            <summary class="arette-description__summary">
+              <span>{{ block.settings.title_tasting | escape }}</span>
+              <span class="arette-description__caret" aria-hidden="true"></span>
+            </summary>
+            <rte-formatter class="text-block rte arette-description__content">{{ tasting }}</rte-formatter>
+          </details>
+        {% endif %}
+
+        {% if serving != blank %}
+          <details class="arette-description__row">
+            <summary class="arette-description__summary">
+              <span>{{ block.settings.title_serving | escape }}</span>
+              <span class="arette-description__caret" aria-hidden="true"></span>
+            </summary>
+            <rte-formatter class="text-block rte arette-description__content">{{ serving }}</rte-formatter>
+          </details>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .arette-description {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .arette-description__rows {
+    border-block-start: 1px solid rgb(35 31 32 / 0.2);
+  }
+
+  .arette-description__row {
+    border-block-end: 1px solid rgb(35 31 32 / 0.2);
+  }
+
+  .arette-description__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1rem;
+    font-family: var(--arette-font-sub, sans-serif);
+    font-weight: 600;
+    font-size: var(--arette-size-label, 0.9375rem);
+    letter-spacing: var(--arette-tracking-label, 0.1em);
+    text-transform: uppercase;
+    color: var(--arette-brown, #7b5221);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .arette-description__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .arette-description__summary:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
+
+  .arette-description__caret {
+    flex-shrink: 0;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-inline-end: 2px solid currentcolor;
+    border-block-end: 2px solid currentcolor;
+    transform: translateY(-25%) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .arette-description__row[open] .arette-description__caret {
+    transform: translateY(25%) rotate(-135deg);
+  }
+
+  .arette-description__content {
+    padding-block-end: 1rem;
+  }
+
+  .arette-description__content > :first-child {
+    margin-block-start: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arette-description__caret {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_description",
+  "tag": null,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:settings.text",
+      "info": "t:info.arette_description"
+    },
+    {
+      "type": "text",
+      "id": "title_production",
+      "label": "t:settings.arette_accordion_production",
+      "default": "Production"
+    },
+    {
+      "type": "text",
+      "id": "title_tasting",
+      "label": "t:settings.arette_accordion_tasting",
+      "default": "Tasting profile"
+    },
+    {
+      "type": "text",
+      "id": "title_serving",
+      "label": "t:settings.arette_accordion_serving",
+      "default": "How to enjoy"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.arette_description",
+      "category": "t:categories.product",
+      "settings": {
+        "text": "{{ closest.product.description }}"
+      }
+    }
+  ]
+}
+{% endschema %}
