@@ -660,6 +660,16 @@ body .product-details rte-formatter.text-block {
   font-size: var(--arette-size-body);
 }
 
+/* Mobile: the description is a narrow column, so a ragged right edge reads as empty space.
+   Fill each line to both edges and hyphenate long words instead. */
+@media screen and (max-width: 749px) {
+  body .product-details rte-formatter.text-block :is(p, li) {
+    text-align: justify;
+    text-wrap: wrap;
+    hyphens: auto;
+  }
+}
+
 /* Prices: the buy box and the product cards share one family, size and tracking */
 body .product-information product-price .price,
 body .product-card product-price .price,

@@ -186,6 +186,24 @@
     }
   }
 
+  /* Mobile: tighter vertical rhythm between the page sections. */
+  @media screen and (max-width: 749px) {
+    .arette-story--space-top {
+      padding-block-start: 1.5rem;
+    }
+
+    .arette-story--space-bottom {
+      padding-block-end: 2rem;
+    }
+
+    .arette-story__copy,
+    .arette-story__quote,
+    .arette-story--no-images .arette-story__copy,
+    .arette-story--no-images .arette-story__quote {
+      padding-block: 2rem;
+    }
+  }
+
   @media screen and (max-width: 749px) {
     .arette-story--hide-quote-mobile .arette-story__inner--secondary {
       display: none;

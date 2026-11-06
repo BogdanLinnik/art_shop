@@ -422,6 +422,18 @@
     text-transform: uppercase;
   }
 
+  /* Mobile: tighter vertical rhythm between the page sections. */
+  @media screen and (max-width: 749px) {
+    .arette-details__content {
+      gap: 2rem;
+      padding-block: min(var(--arette-details-padding), 2.5rem);
+    }
+
+    .arette-details__process {
+      padding-block: 2.5rem;
+    }
+  }
+
   @media screen and (min-width: 750px) {
     .arette-details__main--panel {
       grid-template-columns: repeat(2, minmax(0, 1fr));
