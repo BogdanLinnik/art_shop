@@ -19,7 +19,7 @@
         "logo_new_tab": false,
         "logo_height": 56,
         "logo_height_mobile": 30,
-        "collection_label": "Collection",
+        "collection_label": "Collections",
         "collection_url": "/collections/all",
         "show_book_button": true,
         "book_label": "Book your visit",
