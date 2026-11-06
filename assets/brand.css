@@ -71,6 +71,16 @@
   --arette-font-sub: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --arette-font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
+  /* Type scale shared by the product page sections */
+  --arette-size-heading: clamp(2.25rem, 4.5vw, 3.25rem);
+  --arette-size-body: 0.875rem;
+  --arette-size-eyebrow: clamp(1.125rem, 1.6vw, 1.375rem);
+  --arette-size-label: 0.9375rem;
+  --arette-size-price: 1.125rem;
+  --arette-tracking-tight: 0.04em;
+  --arette-tracking-label: 0.1em;
+  --arette-tracking-eyebrow: 0.14em;
+
   /* Page background/foreground come from the color_palette default in config/settings_schema.json */
   --color-primary-button-text: var(--arette-cream);
   --color-primary-button-background: var(--arette-green);
@@ -113,6 +123,12 @@
   --style-border-radius-inputs: 0;
   --style-border-radius-popover: 0;
   --style-border-radius-pills: 0;
+}
+
+@media screen and (min-width: 750px) {
+  :root {
+    --arette-size-body: 1rem;
+  }
 }
 
 body {
@@ -254,7 +270,7 @@ h6,
 
 .product-card .price,
 .product-card [class*='price'] {
-  font-family: var(--arette-font-body);
+  font-family: var(--arette-font-sub);
   color: var(--arette-brown);
 }
 
@@ -289,7 +305,7 @@ a.button,
 .product-information [class*='price'] {
   color: var(--arette-brown);
   font-family: var(--arette-font-sub);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--arette-tracking-tight);
 }
 
 .product-information .variant-option__button-label,
@@ -637,6 +653,20 @@ body .page-wrapper.page-wrapper--drawer-open {
 /* Product details column: paragraphs use the full column width; the buy buttons are capped at 600px */
 body .product-details .text-block.text-block > * {
   max-width: 100%;
+}
+
+/* Product details column: description and spec lists use the shared body size */
+body .product-details rte-formatter.text-block {
+  font-size: var(--arette-size-body);
+}
+
+/* Prices: the buy box and the product cards share one family, size and tracking */
+body .product-information product-price .price,
+body .product-card product-price .price,
+body .product-card .price {
+  font-family: var(--arette-font-sub);
+  font-size: var(--arette-size-price);
+  letter-spacing: var(--arette-tracking-tight);
 }
 
 body .product-details .buy-buttons-block {
