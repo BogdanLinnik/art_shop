@@ -1,0 +1,241 @@
+{% comment %}
+  Section contract.
+  A heading and a grid of the products of one collection, for pages that group the catalog by line
+  (Clásico, Artesanal, ...). Place one section per group, in the order the page should show them.
+  Optional decorative separator above the heading divides a group from the one before it.
+  Cards come from the static `product-card` block, so they look like the main collection grid cards.
+  Renders nothing when the section is hidden, no collection is selected or the collection has no products.
+  Shows at most 50 products.
+  @example
+  <!-- templates/collection.json: "arette_group_clasico" (collection arette-clasico, no separator),
+       then "arette_group_artesanal" (collection arette-artesanal, separator on) -->
+{% endcomment %}
+
+{% liquid
+  assign group = section.settings.collection
+  assign group_products = group.products
+%}
+
+{%- if section.settings.show_section and group != blank and group_products.size > 0 -%}
+  <section
+    class="arette-group"
+    style="
+      --arette-group-heading: {{ section.settings.heading_color }};
+      --arette-group-padding-top: {{ section.settings.padding_top }}px;
+      --arette-group-padding-bottom: {{ section.settings.padding_bottom }}px;
+    "
+    {% if section.settings.heading != blank %}
+      aria-label="{{ section.settings.heading | escape }}"
+    {% endif %}
+  >
+    {%- if section.settings.show_separator -%}
+      <hr class="arette-group__separator" data-arette-reveal>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="arette-group__heading" data-arette-reveal>{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    <div class="collection-wrapper">
+      <ul
+        class="product-grid product-grid--grid arette-group__grid"
+        role="list"
+        data-testid="product-grid"
+      >
+        {%- for product in group_products limit: 50 -%}
+          <li
+            id="{{ section.id }}-{{ product.id }}"
+            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+            data-product-id="{{ product.id }}"
+          >
+            {% content_for 'block',
+              type: '_product-card',
+              id: 'product-card',
+              closest.product: product,
+              product_view_context: 'collection'
+            %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+<script
+  type="module"
+  src="{{ 'arette-reveal.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .arette-group {
+    padding-block: var(--arette-group-padding-top) var(--arette-group-padding-bottom);
+    padding-inline: var(--page-margin, 1.25rem);
+  }
+
+  /* The wrapper margins of the single main grid would stack between groups; the section padding owns the spacing. */
+  body .arette-group .collection-wrapper {
+    margin-block: 0;
+  }
+
+  /* Own grid layout, so the section does not depend on the main collection grid's stylesheet. */
+  .arette-group .arette-group__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
+    gap: 1.5rem 1rem;
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    isolation: isolate;
+  }
+
+  .arette-group .arette-group__grid :is(h3, p) {
+    margin: 0;
+  }
+
+  .arette-group .product-grid__item {
+    min-width: 0;
+  }
+
+  .arette-group__separator {
+    position: relative;
+    inline-size: min(100%, 36rem);
+    block-size: 1px;
+    margin: 0 auto 2.5rem;
+    border: 0;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--arette-gold, #b68841) 20%,
+      var(--arette-gold, #b68841) 80%,
+      transparent
+    );
+    overflow: visible;
+  }
+
+  /* A small diamond in the middle of the line. */
+  .arette-group__separator::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    background-color: var(--arette-gold, #b68841);
+    box-shadow: 0 0 0 0.375rem var(--color-background, var(--arette-sand, #f5f3ea));
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .arette-group .arette-group__heading {
+    margin: 0 0 2rem;
+    font-family: var(--arette-font-display, sans-serif);
+    font-size: var(--arette-size-heading, clamp(2.25rem, 4.5vw, 3.25rem));
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--arette-group-heading);
+  }
+
+  @media screen and (max-width: 749px) {
+    .arette-group {
+      padding-inline: 0;
+    }
+
+    .arette-group .arette-group__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+
+    .arette-group__separator {
+      inline-size: calc(100% - 2 * var(--page-margin, 1.25rem));
+      margin-block-end: 1.5rem;
+    }
+
+    .arette-group .arette-group__heading {
+      margin-block-end: 1.25rem;
+      padding-inline: var(--page-margin, 1.25rem);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.arette_product_group",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "blocks": [
+    {
+      "type": "_product-card"
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "t:settings.arette_show_section",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:settings.collection",
+      "info": "t:info.arette_group_collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "t:settings.arette_show_separator",
+      "info": "t:info.arette_show_separator",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:content.colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:settings.arette_heading_color",
+      "default": "#696d40"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:settings.arette_padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:settings.arette_padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.arette_product_group"
+    }
+  ]
+}
+{% endschema %}

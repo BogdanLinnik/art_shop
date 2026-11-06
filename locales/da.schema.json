@@ -9,6 +9,7 @@
  */
 {
   "names": {
+    "arette_product_group": "Product group",
     "arette_description": "Description accordions",
     "arette_message": "Message",
     "arette_two_paths": "Two paths",
@@ -193,6 +194,7 @@
     "disclosures": "Oplysninger"
   },
   "settings": {
+    "arette_show_separator": "Show separator",
     "arette_card_background": "Card background",
     "arette_card_text": "Card text color",
     "arette_show_section": "Show section",
@@ -1189,6 +1191,8 @@
     "disclosures": "Oplysninger"
   },
   "info": {
+    "arette_group_collection": "The products of this collection are shown in the grid.",
+    "arette_show_separator": "A decorative line above the heading, to divide this group from the previous one.",
     "arette_card_colors": "Leave empty to keep the default card colors.",
     "arette_carousel_collection": "Leave empty to show the other products from the catalog, with products on sale first.",
     "arette_description": "The first paragraph stays visible. Other paragraphs go into accordion rows: paragraphs before the first bulleted list under the production title, the list under the tasting title, and paragraphs after it under the serving title.",
