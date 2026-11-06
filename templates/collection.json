@@ -14,11 +14,58 @@
       "settings": {
         "image": "shopify://shop_images/banner-full-line.jpg",
         "overlay_opacity": 45,
+        "title": "Our tequilas",
         "eyebrow": "",
         "show_description": true,
         "height": 460,
-        "height_mobile": 320,
-        "title": "Our tequilas"
+        "height_mobile": 320
+      }
+    },
+    "heritage": {
+      "type": "arette-heritage",
+      "blocks": {
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "figure": "1900",
+            "label": "El Llano distillery founded"
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "figure": "1986",
+            "label": "Arette launched"
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "figure": "100%",
+            "label": "Estate blue Weber agave"
+          }
+        },
+        "f4": {
+          "type": "fact",
+          "settings": {
+            "figure": "NOM 1109",
+            "label": "Tequila, Jalisco"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "eyebrow": "Since 1900",
+        "heading": "A tequila that honors tradition",
+        "text": "Crafted at one of the oldest independent, family-run tequila distilleries, Arette was launched in 1986 by Eduardo and Jaime Orendain at El Llano. Named after Arete, the Olympic gold medal-winning horse, it represents excellence and heritage.",
+        "background_color": "#f5f3ea",
+        "heading_color": "#696d40",
+        "padding": 80
       }
     },
     "main": {
@@ -36,6 +83,8 @@
             "show_filter_label": false,
             "enable_sorting": false,
             "enable_grid_density": false,
+            "background_color": "",
+            "text_color": "",
             "padding-block-start": 8,
             "padding-block-end": 8,
             "padding-inline-start": 0,
@@ -50,9 +99,11 @@
           "static": true,
           "settings": {
             "product_card_gap": 4,
+            "background_color": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
+            "border_color": "",
             "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -67,6 +118,7 @@
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
+                "border_color": "",
                 "border_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -79,6 +131,7 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
+                "remove_prefix": "Arette",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -89,14 +142,14 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
+                "text_color": "",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 4,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "remove_prefix": "Arette"
+                "padding-inline-end": 0
               },
               "blocks": {}
             },
@@ -114,6 +167,7 @@
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
+                "text_color": "",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -123,7 +177,124 @@
             },
             "arette_add": {
               "type": "arette-card-add",
-              "settings": {}
+              "settings": {},
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "card-gallery",
+            "product_title_4nY4eT",
+            "price_EzJzMm",
+            "arette_add"
+          ]
+        }
+      },
+      "disabled": true,
+      "settings": {
+        "layout_type": "grid",
+        "product_card_size": "medium",
+        "mobile_product_card_size": "small",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
+        "product_grid_width": "centered",
+        "full_width_on_mobile": true,
+        "columns_gap_horizontal": 16,
+        "columns_gap_vertical": 24,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 0,
+        "padding-block-end": 32
+      }
+    },
+    "arette_group_clasico": {
+      "type": "arette-product-group",
+      "blocks": {
+        "product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "card-gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_4nY4eT": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "remove_prefix": "Arette",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_EzJzMm": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "arette_add": {
+              "type": "arette-card-add",
+              "settings": {},
+              "blocks": {}
             }
           },
           "block_order": [
@@ -135,20 +306,126 @@
         }
       },
       "settings": {
-        "layout_type": "grid",
-        "product_card_size": "medium",
-        "mobile_product_card_size": "small",
-        "product_grid_width": "centered",
-        "full_width_on_mobile": true,
-        "columns_gap_horizontal": 16,
-        "columns_gap_vertical": 24,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 0,
-        "padding-block-end": 32
+        "show_section": true,
+        "collection": "arette-clasico",
+        "heading": "Arette Clásico",
+        "show_separator": false,
+        "mobile_carousel": false,
+        "interval": 10,
+        "heading_color": "#696d40",
+        "padding_top": 48,
+        "padding_bottom": 16
+      }
+    },
+    "arette_group_artesanal": {
+      "type": "arette-product-group",
+      "blocks": {
+        "product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "card-gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_4nY4eT": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "remove_prefix": "Arette",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_EzJzMm": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "arette_add": {
+              "type": "arette-card-add",
+              "settings": {},
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "card-gallery",
+            "product_title_4nY4eT",
+            "price_EzJzMm",
+            "arette_add"
+          ]
+        }
       },
-      "disabled": true
+      "settings": {
+        "show_section": true,
+        "collection": "arette-artesanal",
+        "heading": "Arette Artesanal",
+        "show_separator": true,
+        "mobile_carousel": true,
+        "interval": 10,
+        "heading_color": "#696d40",
+        "padding_top": 56,
+        "padding_bottom": 16
+      }
     },
     "arette_merch": {
       "type": "arette-other-tequilas",
@@ -251,61 +528,16 @@
         }
       },
       "settings": {
+        "show_section": true,
         "heading": "Our merch",
+        "collection": "arette-artesanal",
         "max_products": 12,
         "interval": 10,
         "background_color": "#f5f3ea",
         "heading_color": "#696d40",
-        "padding": 88,
-        "show_section": true,
-        "collection": "arette-artesanal"
-      }
-    },
-    "heritage": {
-      "type": "arette-heritage",
-      "blocks": {
-        "f1": {
-          "type": "fact",
-          "settings": {
-            "figure": "1900",
-            "label": "El Llano distillery founded"
-          }
-        },
-        "f2": {
-          "type": "fact",
-          "settings": {
-            "figure": "1986",
-            "label": "Arette launched"
-          }
-        },
-        "f3": {
-          "type": "fact",
-          "settings": {
-            "figure": "100%",
-            "label": "Estate blue Weber agave"
-          }
-        },
-        "f4": {
-          "type": "fact",
-          "settings": {
-            "figure": "NOM 1109",
-            "label": "Tequila, Jalisco"
-          }
-        }
-      },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3",
-        "f4"
-      ],
-      "settings": {
-        "eyebrow": "Since 1900",
-        "heading": "A tequila that honors tradition",
-        "text": "Crafted at one of the oldest independent, family-run tequila distilleries, Arette was launched in 1986 by Eduardo and Jaime Orendain at El Llano. Named after Arete, the Olympic gold medal-winning horse, it represents excellence and heritage.",
-        "background_color": "#f5f3ea",
-        "heading_color": "#696d40",
-        "padding": 80
+        "card_background_color": "",
+        "card_text_color": "",
+        "padding": 88
       }
     },
     "pairings": {
@@ -316,7 +548,8 @@
           "settings": {
             "image": "shopify://shop_images/02-paloma.jpg",
             "drink": "Paloma",
-            "product": "arette-artesanal-blanco"
+            "product": "arette-artesanal-blanco",
+            "recipe_url": "https://cdn.shopify.com/s/files/1/1017/5882/8826/files/arette-recipe-paloma.pdf?v=1793984035"
           }
         },
         "p2": {
@@ -324,7 +557,8 @@
           "settings": {
             "image": "shopify://shop_images/01-margarita.jpg",
             "drink": "Margarita",
-            "product": "arette-artesanal-reposado"
+            "product": "arette-artesanal-reposado",
+            "recipe_url": "https://cdn.shopify.com/s/files/1/1017/5882/8826/files/arette-recipe-margarita.pdf?v=1793984035"
           }
         },
         "p3": {
@@ -332,7 +566,8 @@
           "settings": {
             "image": "shopify://shop_images/01-old-fashioned.jpg",
             "drink": "Old Fashioned",
-            "product": "arette-artesanal-anejo"
+            "product": "arette-artesanal-anejo",
+            "recipe_url": "https://cdn.shopify.com/s/files/1/1017/5882/8826/files/arette-recipe-old-fashioned.pdf?v=1793984036"
           }
         },
         "p4": {
@@ -340,7 +575,8 @@
           "settings": {
             "image": "shopify://shop_images/02-martini.jpg",
             "drink": "Martini",
-            "product": "arette-fuerte-artesanal-101-proof-blanco-tequila"
+            "product": "arette-fuerte-artesanal-101-proof-blanco-tequila",
+            "recipe_url": "https://cdn.shopify.com/s/files/1/1017/5882/8826/files/arette-recipe-martini.pdf?v=1793984035"
           }
         }
       },
@@ -353,11 +589,13 @@
       "settings": {
         "heading": "Sip it your way",
         "text": "Clean agave tequila shines in a simple drink. Pick a bottle and make it yours.",
+        "show_recipe": true,
+        "mobile_carousel": true,
+        "interval": 10,
         "background_color": "#f5f3ea",
         "heading_color": "#696d40",
-        "padding": 88,
         "padding_top": 40,
-        "mobile_carousel": true
+        "padding": 88
       }
     },
     "paths": {
@@ -369,6 +607,9 @@
             "image": "shopify://shop_images/banner-artesanal-line.jpg",
             "title": "Arette Artesanal",
             "description": "A deep respect for traditional methods. Agaves are slowly cooked for 48 hours in stone and brick ovens, naturally fermented in open-air concrete tanks, and double-distilled in stainless steel pots.",
+            "link_label": "",
+            "link_url": "",
+            "text_align": "start",
             "mobile_order": 1
           }
         },
@@ -408,8 +649,10 @@
             "image": "shopify://shop_images/banner-clasico.jpg",
             "title": "Arette Clásico",
             "description": "Crafted for consistency, clarity and a clean expression of tequila. Agave is cooked for 14 hours in an autoclave, naturally fermented in open-air stainless steel tanks, and double-distilled.",
-            "mobile_order": 3,
-            "text_align": "end"
+            "link_label": "",
+            "link_url": "",
+            "text_align": "end",
+            "mobile_order": 3
           }
         }
       },
@@ -425,211 +668,6 @@
         "background_color": "#f5f3ea",
         "heading_color": "#696d40",
         "padding": 88
-      }
-    },
-    "arette_group_clasico": {
-      "type": "arette-product-group",
-      "blocks": {
-        "product-card": {
-          "type": "_product-card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "card-gallery": {
-              "type": "_product-card-gallery",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_4nY4eT": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "remove_prefix": "Arette"
-              },
-              "blocks": {}
-            },
-            "price_EzJzMm": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "arette_add": {
-              "type": "arette-card-add",
-              "settings": {}
-            }
-          },
-          "block_order": [
-            "card-gallery",
-            "product_title_4nY4eT",
-            "price_EzJzMm",
-            "arette_add"
-          ]
-        }
-      },
-      "settings": {
-        "show_section": true,
-        "collection": "arette-clasico",
-        "heading": "Arette Clásico",
-        "show_separator": false,
-        "heading_color": "#696d40",
-        "padding_top": 48,
-        "padding_bottom": 16
-      }
-    },
-    "arette_group_artesanal": {
-      "type": "arette-product-group",
-      "blocks": {
-        "product-card": {
-          "type": "_product-card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "card-gallery": {
-              "type": "_product-card-gallery",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_4nY4eT": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "remove_prefix": "Arette"
-              },
-              "blocks": {}
-            },
-            "price_EzJzMm": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "arette_add": {
-              "type": "arette-card-add",
-              "settings": {}
-            }
-          },
-          "block_order": [
-            "card-gallery",
-            "product_title_4nY4eT",
-            "price_EzJzMm",
-            "arette_add"
-          ]
-        }
-      },
-      "settings": {
-        "show_section": true,
-        "collection": "arette-artesanal",
-        "heading": "Arette Artesanal",
-        "show_separator": true,
-        "heading_color": "#696d40",
-        "padding_top": 56,
-        "padding_bottom": 16,
-        "mobile_carousel": true
       }
     }
   },
