@@ -9,7 +9,7 @@
  */
 {
   "names": {
-    "arette_description": "Product description (accordions)",
+    "arette_description": "Description accordions",
     "arette_message": "Message",
     "arette_two_paths": "Two paths",
     "arette_path": "Path",
@@ -193,6 +193,9 @@
     "disclosures": "Ilmoitukset"
   },
   "settings": {
+    "arette_card_background": "Card background",
+    "arette_card_text": "Card text color",
+    "arette_show_section": "Show section",
     "arette_accordion_production": "Production row title",
     "arette_accordion_tasting": "Tasting row title",
     "arette_accordion_serving": "Serving row title",
@@ -1186,6 +1189,8 @@
     "disclosures": "Ilmoitukset"
   },
   "info": {
+    "arette_card_colors": "Leave empty to keep the default card colors.",
+    "arette_carousel_collection": "Leave empty to show the other products from the catalog, with products on sale first.",
     "arette_description": "The first paragraph stays visible. Other paragraphs go into accordion rows: paragraphs before the first bulleted list under the production title, the list under the tasting title, and paragraphs after it under the serving title.",
     "arette_text_align": "Desktop and tablet only. On mobile the text stays on the left.",
     "arette_mobile_position": "Order on mobile screens (1 is first). 0 keeps the desktop order.",

@@ -713,3 +713,14 @@ body .product-details .buy-buttons-block {
     padding-inline: 0.75rem;
   }
 }
+
+/* Collection page, desktop: the space between the product grid and the next section matches the space below that section */
+@media screen and (min-width: 750px) {
+  body .collection-wrapper {
+    margin-block-end: 0;
+  }
+
+  body .product-grid-container {
+    --padding-block-end: 2.5rem !important;
+  }
+}
