@@ -65,8 +65,8 @@
     margin: 0;
     font-family: var(--arette-font-sub, sans-serif);
     font-weight: 600;
-    font-size: 0.9375rem;
-    letter-spacing: 0.14em;
+    font-size: var(--arette-size-eyebrow, clamp(1.125rem, 1.6vw, 1.375rem));
+    letter-spacing: var(--arette-tracking-eyebrow, 0.14em);
     text-transform: uppercase;
     color: var(--arette-brown, #7b5221);
   }
@@ -74,7 +74,7 @@
   .arette-heritage .arette-heritage__heading {
     margin: 0;
     font-family: var(--arette-font-display, sans-serif);
-    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-size: var(--arette-size-heading, clamp(2.25rem, 4.5vw, 3.25rem));
     line-height: 1.05;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -85,7 +85,7 @@
   .arette-heritage__text {
     margin: 0;
     max-width: 40rem;
-    font-size: 1.125rem;
+    font-size: var(--arette-size-body, 1rem);
     line-height: 1.7;
     text-wrap: pretty;
   }
