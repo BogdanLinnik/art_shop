@@ -130,15 +130,22 @@
   }
 
   /* Own grid layout, so the section does not depend on the main collection grid's stylesheet. */
+  /* Same columns as the main collection grid: two per row on tablets, three from 990px. */
   .arette-group .arette-group__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem 1rem;
     max-width: 70rem;
     margin: 0 auto;
     padding: 0;
     list-style: none;
     isolation: isolate;
+  }
+
+  @media screen and (min-width: 990px) {
+    .arette-group .arette-group__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .arette-group .arette-group__grid :is(h3, p) {
